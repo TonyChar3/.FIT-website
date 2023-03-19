@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import CartDrawer from '../cart_drawer/CartDrawer';
+import CartDrawer from './cart_drawer/CartDrawer';
 
 const Navbar = () => {
 
@@ -22,7 +22,7 @@ const Navbar = () => {
 
     return(
         <>
-            <nav className="grid lg:grid-cols-3 grid-cols-3 p-3 border-b-2 border-black z-10 md:p-4">
+            <nav className="grid lg:grid-cols-3 grid-cols-3 p-3 sticky z-10 top-0 left-0 w-full border-b-2 border-black bg-white md:p-4">
                 <div className="ml-1 self-center lg:hidden">
                     <motion.i whileTap={{ scale: 0.70 }} className="fa-sharp fa-solid fa-bars text-3xl md:text-4xl" onClick={HandleMenuClick}></motion.i>
                 </div>
@@ -34,13 +34,14 @@ const Navbar = () => {
                     absolute 
                     top-16 
                     ${toggleNavMenu} 
-                    duration-300 
+                    duration-700 
                     border-2 
                     border-black 
                     rounded-tr-lg 
                     rounded-b-lg 
                     p-1 
                     w-2/3
+                    bg-white
                     md:top-20
                     md:w-2/4
                     lg:w-full
@@ -49,7 +50,7 @@ const Navbar = () => {
                     lg:flex-cols 
                     lg:top-0
                     lg:p-0 
-                    lg:border-0  
+                    lg:border-0 
                     `
                 }>
                     <div className="flex justify-end w-full lg:hidden">
@@ -71,7 +72,7 @@ const Navbar = () => {
                     <motion.i whileTap={{ scale: 0.90 }} className="fa-regular fa-cart-shopping text-3xl md:text-4xl" onClick={HandleCartClick}></motion.i>
                 </div>
             </nav>
-            <CartDrawer activate={activeCart} func={HandleCartClick} />
+            <CartDrawer activate={activeCart} closing={HandleCartClick} />
         </>
 
     );
