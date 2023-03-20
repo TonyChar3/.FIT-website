@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CartDrawer from './cart_drawer/CartDrawer';
 
@@ -27,7 +28,7 @@ const Navbar = () => {
                     <motion.i whileTap={{ scale: 0.70 }} className="fa-sharp fa-solid fa-bars text-3xl md:text-4xl" onClick={HandleMenuClick}></motion.i>
                 </div>
                 <div className="text-center lg:justify-self-start lg:ml-6">
-                    <h1 className="text-4xl lg:text-6xl md:text-5xl">.FIT</h1>
+                    <h1 className="text-4xl lg:text-6xl md:text-5xl"><Link to="/">.FIT</Link></h1>
                 </div>
 
                 <div className={`
@@ -57,10 +58,10 @@ const Navbar = () => {
                         <i className="fa-sharp fa-solid fa-xmark mr-2 text-2xl md:text-4xl md:mr-4" onClick={HandleMenuClick}></i>
                     </div>
                     <ul className="flex flex-col justify-center lg:flex-row lg:justify-around lg:w-full">
-                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer">Menu</motion.li>
-                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer">Shop</motion.li>
-                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer">About</motion.li>
-                        <motion.li whileTap={{ scale: 0.85 }} className="mt-2 mb-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:p-0 lg:my-auto cursor-pointer">Contact</motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/">Home</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/about">About</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} className="mt-2 mb-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:p-0 lg:my-auto cursor-pointer"><Link to="/contact">Contact</Link></motion.li>
                         <li><i className="pl-4 mb-4 fa-solid fa-user text-xl md:text-2xl lg:hidden"></i></li>
                     </ul>
                 </div>
@@ -73,6 +74,7 @@ const Navbar = () => {
                 </div>
             </nav>
             <CartDrawer activate={activeCart} closing={HandleCartClick} />
+            <Outlet />
         </>
 
     );

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Outlet, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
 
@@ -29,58 +31,67 @@ const Footer = () => {
     
     return(
         <>
-            <div>
-                <div className="flex flex-row justify-center items-center border-b-2 border-black p-2">
-                    <div className="text-center w-1/4 z-10">
-                        <h3 className="text-3xl capitalize">Menu</h3>
+            <Outlet />
+            <div className="lg:flex lg:flex-row lg:justify-around">
+                <div className="lg:flex lg:flex-col lg:my-[100px]">
+                    <div className="flex flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
+                        <div className="text-center w-1/4 z-10">
+                            <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Menu</h3>
+                        </div>
+                        <div className="flex justify-center ml-2 lg:hidden">
+                            <i onClick={(e) => handleArrowMenu(e)} className={`fa-sharp fa-solid fa-chevron-${arrowMenu? 'down' : 'up'} text-xl`}></i>
+                        </div>
                     </div>
-                    <div className="flex justify-center ml-2">
-                        <i onClick={(e) => handleArrowMenu(e)} className={`fa-sharp fa-solid fa-chevron-${arrowMenu? 'up' : 'down'} text-2xl`}></i>
-                    </div>
-                </div>
-                <div className="flex flex-col justify-center items-center w-full p-2">
-                    <ul className="relative top-20 flex flex-col justify-center items-center z-10">
-                        <li className="text-2xl my-1">Home</li>
-                        <li className="text-2xl my-1">Shop</li>
-                        <li className="text-2xl my-1">Contact us</li>
-                        <li className="text-2xl my-1">About</li>
-                    </ul>
-                </div>
-                <div className="flex flex-row justify-center items-center border-b-2 border-black p-2 bg-white">
-                    <div className="text-center w-1/4 z-10">
-                        <h3 className="text-3xl capitalize">Policy</h3>
-                    </div>
-                    <div className="flex justify-center ml-2">
-                        <i onClick={(e) => handleArrowPolicy(e)} className={`fa-sharp fa-solid fa-chevron-${arrowPolicy? 'up' : 'down'} text-2xl `}></i>
+                    <div className={`flex flex-col justify-center items-center w-full p-2 ${arrowMenu? '' : 'hidden'} lg:flex`}>
+                        <ul className={`relative w-full left-0 right-0 ${arrowMenu? '' : 'bottom-96 -z-10'} flex flex-col justify-center items-center lg:bottom-0 lg:items-start lg:z-0`}>
+                            <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/">Home</Link></motion.li>
+                            <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
+                            <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/contact">Contact us</Link></motion.li>
+                            <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/about">About</Link></motion.li>
+                        </ul>
                     </div>
                 </div>
-                <div>
-                    <ul>
-                        <li>Faq</li>
-                        <li>Policy</li>
-                        <li>Shipping & returns</li>
-                    </ul>
-                </div>
-                <div className="flex flex-row justify-center items-center border-b-2 border-black p-2">
-                    <div className="text-center w-1/4 z-10">
-                        <h3 className="text-3xl capitalize">Socials</h3>
+
+                <div className="lg:flex lg:flex-col lg:my-[100px]">
+                    <div className="flex z-10 flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
+                        <div className="text-center w-1/4 ">
+                            <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Policy</h3>
+                        </div>
+                        <div className="flex justify-center ml-2 lg:hidden">
+                            <i onClick={(e) => handleArrowPolicy(e)} className={`fa-sharp fa-solid fa-chevron-${arrowPolicy? 'down' : 'up'} text-xl `}></i>
+                        </div>
                     </div>
-                    <div className="flex justify-center ml-2">
-                        <i onClick={(e) => handleArrowSocials(e)} className={`fa-sharp fa-solid fa-chevron-${arrowSocials? 'up' : 'down'} text-2xl`}></i>
+                    <div className={`flex flex-col justify-center items-center w-full p-2 ${arrowPolicy? '' : 'hidden'} duration-300 lg:flex`}>
+                        <ul className={`relative w-full left-0 right-0 ${arrowPolicy? '' : 'bottom-[450px] -z-10'} flex flex-col justify-center items-center duration-700 lg:bottom-0 lg:items-start lg:z-0`}>
+                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.70 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/faq">Faq</Link></motion.li>
+                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.70 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/policy">Policy</Link></motion.li>
+                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.70 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/shipping">Shipping & returns</Link></motion.li>
+                        </ul>
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <i className="fa-brands fa-snapchat"></i>
-                        <i className="fa-brands fa-instagram"></i>
-                        <i className="fa-brands fa-tiktok"></i>
+
+                <div className="lg:flex lg:flex-col lg:my-[100px]">
+                    <div className="flex flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
+                        <div className="text-center w-1/4 z-10">
+                            <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Socials</h3>
+                        </div>
+                        <div className="flex justify-center ml-2 lg:hidden">
+                            <i onClick={(e) => handleArrowSocials(e)} className={`fa-sharp fa-solid fa-chevron-${arrowSocials? 'down' : 'up'} text-xl`}></i>
+                        </div>
                     </div>
-                    <h4>email@random.com</h4>
-                    <h4>(444) 444-4444</h4>
+                    <div className={`left-0 right-0 ${arrowSocials? '' : 'absolute top-96 -z-10'} flex flex-col justify-center items-center w-full p-2 lg:static lg:items-start lg:z-0`}>
+                        <div className="flex flex-row justify-center w-full">
+                            <motion.i whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="fa-brands fa-snapchat text-3xl mx-4 lg:my-4 lg:text-4xl cursor-pointer"></motion.i>
+                            <motion.i whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="fa-brands fa-instagram text-3xl mx-4 lg:my-4 lg:text-4xl cursor-pointer"></motion.i>
+                            <motion.i whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="fa-brands fa-tiktok text-3xl mx-4 lg:my-4 lg:text-4xl cursor-pointer"></motion.i>
+                        </div>
+                        <h4 className="text-xl my-1 lg:text-2xl lg:my-4"><i className="fa-regular fa-envelope lg:text-3xl lg:mr-2 lg:fa hidden sm:inline"></i>email@random.com</h4>
+                        <h4 className="text-xl my-1 lg:text-2xl lg:my-4"><i className="fa-regular fa-phone lg:text-3xl lg:mr-2 lg:fa hidden sm:inline"></i>(444) 444-4444</h4>
+                    </div>
                 </div>
-                <div className="w-full bg-black text-center p-1">
-                    <span className="text-sm text-white">&copy;.FIT all rights reserved</span>
-                </div>
+            </div>
+            <div className="w-full bg-black text-center p-1 lg:p-2">
+                    <span className="text-sm text-white lg:text-md">&copy;.FIT all rights reserved</span>
             </div>
         </>
 

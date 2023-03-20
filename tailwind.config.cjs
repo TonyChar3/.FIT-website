@@ -13,7 +13,8 @@ module.exports = {
         'deskT-drawer':'90%',
       },
       backgroundImage:{
-        'menu-top-section': "url('/images/pexels-gleb-krasnoborov-2628215.jpg')"
+        'menu-top-section': "url('/images/pexels-gleb-krasnoborov-2628215.jpg')",
+        'desk-menu-top-section' : "url('/images/pexels-tima-miroshnichenko-6388395.jpg')"
       },
       backgroundPosition:{
         'mobile-menu-section': '0% 50%',
