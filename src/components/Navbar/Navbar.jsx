@@ -58,16 +58,16 @@ const Navbar = () => {
                         <i className="fa-sharp fa-solid fa-xmark mr-2 text-2xl md:text-4xl md:mr-4" onClick={HandleMenuClick}></i>
                     </div>
                     <ul className="flex flex-col justify-center lg:flex-row lg:justify-around lg:w-full">
-                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/">Home</Link></motion.li>
-                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
-                        <motion.li whileTap={{ scale: 0.85 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/about">About</Link></motion.li>
-                        <motion.li whileTap={{ scale: 0.85 }} className="mt-2 mb-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:p-0 lg:my-auto cursor-pointer"><Link to="/contact">Contact</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/">Home</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/about">About</Link></motion.li>
+                        <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="mt-2 mb-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:p-0 lg:my-auto cursor-pointer"><Link to="/contact">Contact</Link></motion.li>
                         <li><i className="pl-4 mb-4 fa-solid fa-user text-xl md:text-2xl lg:hidden"></i></li>
                     </ul>
                 </div>
                 <div className="lg:block hidden lg:flex lg:flex-row lg:justify-between lg:my-auto">
-                    <motion.i whileTap={{ scale: 0.90 }} className="fa-solid fa-user text-3xl cursor-pointer"></motion.i>
-                    <motion.i whileTap={{ scale: 0.90 }} className="fa-regular fa-cart-shopping text-4xl hidden lg:inline lg:mr-20 cursor-pointer" onClick={(e) => HandleCartClick(e)}></motion.i>
+                    <motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-solid fa-user text-3xl cursor-pointer"></motion.i>
+                    <motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-regular fa-cart-shopping text-4xl hidden lg:inline lg:mr-20 cursor-pointer" onClick={(e) => HandleCartClick(e)}></motion.i>
                 </div>
                 <div className="mr-1 justify-self-end self-center lg:hidden">
                     <motion.i whileTap={{ scale: 0.90 }} className="fa-regular fa-cart-shopping text-3xl md:text-4xl" onClick={HandleCartClick}></motion.i>

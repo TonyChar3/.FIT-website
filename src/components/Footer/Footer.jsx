@@ -32,7 +32,7 @@ const Footer = () => {
     return(
         <>
             <Outlet />
-            <div className="lg:flex lg:flex-row lg:justify-around">
+            <div className=" lg:flex lg:flex-row lg:justify-around border-t-2 border-black">
                 <div className="lg:flex lg:flex-col lg:my-[100px]">
                     <div className="flex flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
                         <div className="text-center w-1/4 z-10">
@@ -53,7 +53,7 @@ const Footer = () => {
                 </div>
 
                 <div className="lg:flex lg:flex-col lg:my-[100px]">
-                    <div className="flex z-10 flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
+                    <div className={`flex z-10 flex-row justify-center items-center border-${ arrowMenu? 'y' : 'b' }-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start`}>
                         <div className="text-center w-1/4 ">
                             <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Policy</h3>
                         </div>
@@ -65,14 +65,13 @@ const Footer = () => {
                         <ul className={`relative w-full left-0 right-0 ${arrowPolicy? '' : 'bottom-[450px] -z-10'} flex flex-col justify-center items-center duration-700 lg:bottom-0 lg:items-start lg:z-0`}>
                             <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.70 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/faq">Faq</Link></motion.li>
                             <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.70 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/policy">Policy</Link></motion.li>
-                            <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.70 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/shipping">Shipping & returns</Link></motion.li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="lg:flex lg:flex-col lg:my-[100px]">
-                    <div className="flex flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
-                        <div className="text-center w-1/4 z-10">
+                    <div className={`flex flex-row justify-center items-center border-${ arrowPolicy? 'y' : 'b' }-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start`}>
+                        <div className="text-center w-1/4 z-10 mr-1">
                             <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Socials</h3>
                         </div>
                         <div className="flex justify-center ml-2 lg:hidden">
@@ -89,6 +88,7 @@ const Footer = () => {
                         <h4 className="text-xl my-1 lg:text-2xl lg:my-4"><i className="fa-regular fa-phone lg:text-3xl lg:mr-2 lg:fa hidden sm:inline"></i>(444) 444-4444</h4>
                     </div>
                 </div>
+
             </div>
             <div className="w-full bg-black text-center p-1 lg:p-2">
                     <span className="text-sm text-white lg:text-md">&copy;.FIT all rights reserved</span>

@@ -8,8 +8,8 @@ import AboutPage from '../components/website pages/About/AboutPage';
 import ContactPage from '../components/website pages/Contact/ContactPage';
 import PolicyPage from '../components/website pages/Policies/Policy/PolicyPage';
 import FaqPage from '../components/website pages/Policies/Faq/FaqPage';
-import ShippingPage from '../components/website pages/Policies/Shipping/ShippingPage';
 import ShopPage from '../components/website pages/Shop/ShopPage';
+import ProductPage from '../components/website pages/Shop/product/ProductPage';
 
 
 function App() {
@@ -25,11 +25,11 @@ function App() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<MenuPage />} />
         <Route path="/shop" element={<ShopPage />} />
+        <Route path="/productpage" element={<ProductPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/policy" element={<PolicyPage />} />
-        <Route path="/shipping" element={<ShippingPage />} />
       </Routes>
       </AnimatePresence>
 

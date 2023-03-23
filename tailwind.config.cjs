@@ -18,7 +18,8 @@ module.exports = {
       },
       backgroundPosition:{
         'mobile-menu-section': '0% 50%',
-      }
+      },
+      listStyleType:['disc'],
     },
   },
   plugins: [],
