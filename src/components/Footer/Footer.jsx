@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
@@ -31,7 +31,6 @@ const Footer = () => {
     
     return(
         <>
-            <Outlet />
             <div className=" lg:flex lg:flex-row lg:justify-around border-t-2 border-black">
                 <div className="lg:flex lg:flex-col lg:my-[100px]">
                     <div className="flex flex-row justify-center items-center border-b-2 border-black p-5 lg:border-0 lg:p-0 lg:justify-start">
