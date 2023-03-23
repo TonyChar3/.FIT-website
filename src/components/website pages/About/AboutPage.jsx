@@ -1,6 +1,9 @@
 
 
 const AboutPage = () => {
+
+    const mapKey = import.meta.env.VITE_FIT_MAP_EMBED;
+
     return(
         <div className="flex flex-col mt-2 mb-[50px] lg:mb-[100px] lg:mt-5">
             <div className="flex flex-row justify-center p-3 w-full border-b-2 border-black lg:w-1/2">
@@ -23,7 +26,7 @@ const AboutPage = () => {
                     className="w-full lg:w-3/4 rounded-xl"
                     loading="lazy" 
                     allowFullScreen
-                    src="https://www.google.com/maps/embed/v1/view?zoom=10&center=48.5650%2C-78.1125&key=AIzaSyAHnbbXP-VrtEE9oHUPdOJQsPnCD6CrH0A"
+                    src={`https://www.google.com/maps/embed/v1/view?zoom=10&center=48.5650%2C-78.1125&key=${mapKey}`}
                     >
                     </iframe>
                 </div>
