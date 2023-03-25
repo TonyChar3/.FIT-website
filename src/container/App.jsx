@@ -10,6 +10,12 @@ import PolicyPage from '../components/website pages/Policies/Policy/PolicyPage';
 import FaqPage from '../components/website pages/Policies/Faq/FaqPage';
 import ShopPage from '../components/website pages/Shop/ShopPage';
 import ProductPage from '../components/website pages/Shop/product/ProductPage';
+import CustomerInfoPage from '../components/website pages/Checkout/CustomerInfoPage';
+import PaymentInfoPage from '../components/website pages/Checkout/PaymentInfoPage';
+import BillingAddressPage from '../components/website pages/Checkout/BillingAddressPage';
+import PayCheckoutPage from '../components/website pages/Checkout/PayCheckoutPage';
+import SignInPage from '../components/Navbar/profile/SignIn/SignInPage';
+import RegisterPage from '../components/Navbar/profile/Register/RegisterPage';
 
 
 function App() {
@@ -26,10 +32,16 @@ function App() {
         <Route path="/" element={<MenuPage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/productpage" element={<ProductPage />} />
+        <Route path="/customerinfo" element={<CustomerInfoPage />} />
+        <Route path="/paymentinfo" element={<PaymentInfoPage />} />
+        <Route path="/billingaddress" element={<BillingAddressPage />} />
+        <Route path="/checkoutpay" element={<PayCheckoutPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/policy" element={<PolicyPage />} />
+        <Route path="/login" element={<SignInPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
       </AnimatePresence>
 

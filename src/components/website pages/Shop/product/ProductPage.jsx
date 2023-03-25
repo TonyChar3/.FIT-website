@@ -121,7 +121,7 @@ const ProductPage = () => {
                         <div className="flex flex-col justify-center items-center">
                             <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="w-60 my-2 p-1 bg-gray-300 text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Add to cart</motion.button>
                             <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="flex flex-row justify-center items-center w-60 my-2 p-1 bg-black text-white text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Buy with <i className="fa-brands fa-apple-pay mx-2 text-2xl"></i></motion.button>
-                            <Link className="my-2 border-b-2 border-black text-center text-sm lg:text-lg">More payment options</Link>
+                            <Link to="/customerinfo" className="my-2 border-b-2 border-black text-center text-sm lg:text-lg">More payment options</Link>
                         </div>
                     </div> 
                 </div>
