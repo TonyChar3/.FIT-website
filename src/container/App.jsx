@@ -16,6 +16,8 @@ import BillingAddressPage from '../components/website pages/Checkout/BillingAddr
 import PayCheckoutPage from '../components/website pages/Checkout/PayCheckoutPage';
 import SignInPage from '../components/Navbar/profile/SignIn/SignInPage';
 import RegisterPage from '../components/Navbar/profile/Register/RegisterPage';
+import SuccessCheckoutPage from '../components/website pages/Checkout/Success/SuccessCheckoutPage';
+import ErrorCheckoutPage from '../components/website pages/Checkout/Error/ErrorCheckoutPage';
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="/paymentinfo" element={<PaymentInfoPage />} />
         <Route path="/billingaddress" element={<BillingAddressPage />} />
         <Route path="/checkoutpay" element={<PayCheckoutPage />} />
+        <Route path="/success" element={<SuccessCheckoutPage />} />
+        <Route path="/error" element={<ErrorCheckoutPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FaqPage />} />

@@ -38,11 +38,11 @@ const Footer = () => {
                             <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Menu</h3>
                         </div>
                         <div className="flex justify-center ml-2 lg:hidden">
-                            <i onClick={(e) => handleArrowMenu(e)} className={`fa-sharp fa-solid fa-chevron-${arrowMenu? 'down' : 'up'} text-xl`}></i>
+                            <i onClick={(e) => handleArrowMenu(e)} className={`fa-sharp fa-solid fa-chevron-up ${arrowMenu? 'rotate-180' : ''} duration-300 text-xl`}></i>
                         </div>
                     </div>
                     <div className={`flex flex-col justify-center items-center w-full p-2 ${arrowMenu? '' : 'hidden'} lg:flex`}>
-                        <ul className={`relative w-full left-0 right-0 ${arrowMenu? '' : 'bottom-96 -z-10'} flex flex-col justify-center items-center lg:bottom-0 lg:items-start lg:z-0`}>
+                        <ul className={`relative w-full left-0 right-0 ${arrowMenu? '' : 'bottom-96 -z-10'} flex flex-col justify-center items-center lg:bottom-0 lg:items-start lg:z-0 duration-300`}>
                             <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/">Home</Link></motion.li>
                             <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
                             <motion.li whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="text-2xl my-1 lg:my-4 cursor-pointer"><Link to="/contact">Contact us</Link></motion.li>
@@ -57,7 +57,7 @@ const Footer = () => {
                             <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Policy</h3>
                         </div>
                         <div className="flex justify-center ml-2 lg:hidden">
-                            <i onClick={(e) => handleArrowPolicy(e)} className={`fa-sharp fa-solid fa-chevron-${arrowPolicy? 'down' : 'up'} text-xl `}></i>
+                            <i onClick={(e) => handleArrowPolicy(e)} className={`fa-sharp fa-solid fa-chevron-up ${arrowPolicy? 'rotate-180' : ''} duration-300 text-xl `}></i>
                         </div>
                     </div>
                     <div className={`flex flex-col justify-center items-center w-full p-2 ${arrowPolicy? '' : 'hidden'} duration-300 lg:flex`}>
@@ -74,7 +74,7 @@ const Footer = () => {
                             <h3 className="text-3xl capitalize lg:text-4xl lg:my-2">Socials</h3>
                         </div>
                         <div className="flex justify-center ml-2 lg:hidden">
-                            <i onClick={(e) => handleArrowSocials(e)} className={`fa-sharp fa-solid fa-chevron-${arrowSocials? 'down' : 'up'} text-xl`}></i>
+                            <i onClick={(e) => handleArrowSocials(e)} className={`fa-sharp fa-solid fa-chevron-up ${arrowSocials? 'rotate-180' : ''} text-xl duration-300`}></i>
                         </div>
                     </div>
                     <div className={`left-0 right-0 ${arrowSocials? '' : 'absolute top-96 -z-10'} flex flex-col justify-center items-center w-full p-2 lg:static lg:items-start lg:z-0`}>

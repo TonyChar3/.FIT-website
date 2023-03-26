@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import CartDrawer from './cart_drawer/CartDrawer';
+import CartDrawer from './Cart/cart_drawer/CartDrawer';
 
 const Navbar = () => {
 
@@ -25,7 +25,7 @@ const Navbar = () => {
         <>
             <nav className="grid lg:grid-cols-3 grid-cols-3 p-3 sticky z-10 top-0 left-0 w-full border-b-2 border-black bg-white md:p-4">
                 <div className="ml-1 self-center lg:hidden">
-                    <motion.i whileTap={{ scale: 0.70 }} className="fa-sharp fa-solid fa-bars text-3xl md:text-4xl" onClick={HandleMenuClick}></motion.i>
+                    <i onClick={HandleMenuClick} className={`fa-sharp fa-solid fa-${navMenu? 'xmark' : 'bars'} text-3xl md:text-4xl ${navMenu? 'rotate-180' : ''} duration-300`}></i>
                 </div>
                 <div className="text-center lg:justify-self-start lg:ml-6">
                     <h1 className="text-4xl lg:text-6xl md:text-5xl"><Link to="/">.FIT</Link></h1>
@@ -54,15 +54,12 @@ const Navbar = () => {
                     lg:border-0 
                     `
                 }>
-                    <div className="flex justify-end w-full lg:hidden">
-                        <i className="fa-sharp fa-solid fa-xmark mr-2 text-2xl md:text-4xl md:mr-4" onClick={HandleMenuClick}></i>
-                    </div>
-                    <ul className="flex flex-col justify-center lg:flex-row lg:justify-around lg:w-full">
+                    <ul className="flex flex-col justify-center my-2 lg:my-0 lg:flex-row lg:justify-around lg:w-full">
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/">Home</Link></motion.li>
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/about">About</Link></motion.li>
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="mt-2 mb-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:p-0 lg:my-auto cursor-pointer"><Link to="/contact">Contact</Link></motion.li>
-                        <li><Link to="/login"><i className="pl-4 mb-4 fa-solid fa-user text-xl md:text-2xl lg:hidden"></i></Link></li>
+                        <li><Link to="/login"><i className="pl-4 fa-solid fa-user text-xl md:text-2xl lg:hidden"></i></Link></li>
                     </ul>
                 </div>
                 <div className="lg:block hidden lg:flex lg:flex-row lg:justify-between lg:my-auto">
