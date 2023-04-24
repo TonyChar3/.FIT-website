@@ -18,6 +18,9 @@ import SignInPage from '../components/Navbar/profile/SignIn/SignInPage';
 import RegisterPage from '../components/Navbar/profile/Register/RegisterPage';
 import SuccessCheckoutPage from '../components/website pages/Checkout/Success/SuccessCheckoutPage';
 import ErrorCheckoutPage from '../components/website pages/Checkout/Error/ErrorCheckoutPage';
+import { AuthContextProvider } from '../context/AuthContext';
+import ProtectedRoutes from '../context/protectedRoutes';
+import ProfilePage from '../components/Navbar/profile/User/profilePage';
 
 
 function App() {
@@ -26,30 +29,35 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      
 
-      <AnimatePresence mode='wait'>
+      <AuthContextProvider>
+        <Navbar />
+        <AnimatePresence mode='wait'>
 
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<MenuPage />} />
-        <Route path="/shop" element={<ShopPage />} />
-        <Route path="/productpage" element={<ProductPage />} />
-        <Route path="/customerinfo" element={<CustomerInfoPage />} />
-        <Route path="/paymentinfo" element={<PaymentInfoPage />} />
-        <Route path="/billingaddress" element={<BillingAddressPage />} />
-        <Route path="/checkoutpay" element={<PayCheckoutPage />} />
-        <Route path="/success" element={<SuccessCheckoutPage />} />
-        <Route path="/error" element={<ErrorCheckoutPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/faq" element={<FaqPage />} />
-        <Route path="/policy" element={<PolicyPage />} />
-        <Route path="/login" element={<SignInPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-      </AnimatePresence>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<MenuPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/productpage" element={<ProductPage />} />
+          <Route path="/customerinfo" element={<CustomerInfoPage />} />
+          <Route path="/paymentinfo" element={<PaymentInfoPage />} />
+          <Route path="/billingaddress" element={<BillingAddressPage />} />
+          <Route path="/checkoutpay" element={<PayCheckoutPage />} />
+          <Route path="/success" element={<SuccessCheckoutPage />} />
+          <Route path="/error" element={<ErrorCheckoutPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/policy" element={<PolicyPage />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={ <ProtectedRoutes> <ProfilePage /> </ProtectedRoutes> } />
+        </Routes>
+        </AnimatePresence>
+        <Footer />
+      </AuthContextProvider>
 
-      <Footer />
+      
     </>
 
     

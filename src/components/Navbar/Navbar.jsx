@@ -2,12 +2,18 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CartDrawer from './Cart/cart_drawer/CartDrawer';
+import { UserAuth } from '../../context/AuthContext';
+
 
 const Navbar = () => {
 
+    const { user } = UserAuth();
+
+    console.log(user)
+
     const [navMenu, setNavMenu] = useState(false);// state of the nav menu tabs
     const [activeCart, setCart] = useState(false);// state of the cart drawer
-
+  
     // handle the click of the hamburger icon
     const HandleMenuClick = () => {
         setNavMenu(navMenu => !navMenu)
@@ -59,11 +65,11 @@ const Navbar = () => {
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/shop">Shop</Link></motion.li>
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="my-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:px-1 lg:my-auto cursor-pointer"><Link to="/about">About</Link></motion.li>
                         <motion.li whileTap={{ scale: 0.85 }} whileHover={{ scale: 1.1 }} className="mt-2 mb-2 p-1 text-center text-2xl md:text-3xl lg:text-4xl lg:p-0 lg:my-auto cursor-pointer"><Link to="/contact">Contact</Link></motion.li>
-                        <li><Link to="/login"><i className="pl-4 fa-solid fa-user text-xl md:text-2xl lg:hidden"></i></Link></li>
+                        <li><Link to={user? '/profile' : '/login'}><i className="pl-4 fa-solid fa-user text-xl md:text-2xl lg:hidden"></i></Link></li>
                     </ul>
                 </div>
                 <div className="lg:block hidden lg:flex lg:flex-row lg:justify-between lg:my-auto">
-                    <Link to="/login"><motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-solid fa-user text-3xl cursor-pointer"></motion.i></Link>
+                    <Link to={user? '/profile' : '/login'}><motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-solid fa-user text-3xl cursor-pointer"></motion.i></Link>
                     <motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-regular fa-cart-shopping text-4xl hidden lg:inline lg:mr-20 cursor-pointer" onClick={(e) => HandleCartClick(e)}></motion.i>
                 </div>
                 <div className="mr-1 justify-self-end self-center lg:hidden">
