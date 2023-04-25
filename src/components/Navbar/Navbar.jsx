@@ -7,9 +7,8 @@ import { UserAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
 
+    // import the current logged in user from Context
     const { user } = UserAuth();
-
-    console.log(user)
 
     const [navMenu, setNavMenu] = useState(false);// state of the nav menu tabs
     const [activeCart, setCart] = useState(false);// state of the cart drawer

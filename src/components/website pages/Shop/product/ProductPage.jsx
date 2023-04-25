@@ -60,7 +60,7 @@ const ProductPage = () => {
                             :
                             SecImg.map((image,i) => (
                                 <motion.div key={i} onClick={() => handleImgChange(image.img_url)} className="w-1/6 h-20 lg:w-full lg:h-40 lg:my-2 lg:flex lg:justify-start">
-                                    <motion.img whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} src={image.img_url} alt="secondary product image" className="w-full h-full border-[1px] border-black object-cover object-center rounded-xl lg:w-2/5"/>
+                                    <motion.img whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} src={image.img_url} alt="secondary product image" className="w-full h-full border-[1px] border-black object-cover object-center rounded-xl lg:w-2/5 cursor-pointer"/>
                                 </motion.div>
                             ))
                         }

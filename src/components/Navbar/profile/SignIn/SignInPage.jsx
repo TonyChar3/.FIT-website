@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { UserAuth } from '../../../../context/AuthContext';
 
 const SignInPage = () => {
 
+    // to redirect to another route
     const navigate = useNavigate();
+
+    // import Context user, LogIn function
+    const { LogIn, user }= UserAuth();
 
     const [email, setEmail] = useState('');// state for the user email
     const [passwd, setPasswd] = useState('');// state for the user password
     const [seePasswrd, setSeePasswrd] = useState(false);// state to the see password eye icon
 
+    
     // handle the click of the eye icon
     const handleEyePassword = () => {
         setSeePasswrd(seePasswrd => !seePasswrd)
@@ -26,31 +32,27 @@ const SignInPage = () => {
     }
 
     // handle the log in
-    const LogIn = (e) => {
+    const SignIn = async(e) => {
         e.preventDefault();
         try{
-            fetch('https://localhost:3001/user/login', {
-                method: 'post',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email: email, password: passwd })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data){
-                    console.log(data.token)
-                    console.log('User log in')
-                    localStorage.setItem('jwtToken', data.token)
-                    navigate('/profile')
-                }
-            })
+
+            await LogIn(email, passwd)
+
         }catch(err){
             console.log(err)
         }
-    }
+    };
+
+    useEffect(() => {
+        if(user){
+            navigate('/')
+        }
+    },[user]);
+
 
     return(
         <>
-            <form onSubmit={LogIn} className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px]">
+            <form onSubmit={SignIn} className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px]">
 
                 <div className="w-full flex flex-row justify-center p-2">
                     <h2 className="text-3xl lg:text-5xl">Login</h2>

@@ -1,5 +1,4 @@
 import { useContext, createContext, useState, useEffect } from 'react';
-import axios from 'axios';
 
 const UserContext = createContext();
 
@@ -8,7 +7,26 @@ export const AuthContextProvider = ({ children }) => {
     const [user, setUser ] = useState({})
 
     const token = localStorage.getItem('jwtToken');
-    console.log(token)
+    
+    const LogIn = (u_email, u_passwd) => {
+
+        try{
+            fetch('https://localhost:3001/user/login', {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email: u_email, password: u_passwd })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data){
+                    setUser(data)
+                    localStorage.setItem('jwtToken', data.token)
+                }
+            })
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     useEffect(() => {
         fetch('https://localhost:3001/user/current', {
@@ -20,17 +38,16 @@ export const AuthContextProvider = ({ children }) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             setUser(data)
         })
         .catch(err => {
-            console.log(err)
             setUser(null)
+            console.log(err)
         })
-    },[])
+    },[token])
 
     return(
-        <UserContext.Provider value={{ user }}>
+        <UserContext.Provider value={{ user, LogIn }}>
             {children}
         </UserContext.Provider>
     )
