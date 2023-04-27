@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UserAuth } from '../../../../context/AuthContext';
 import { motion } from 'framer-motion';
+import WishList from '../Wishlist/wishlist';
 import axios from 'axios';
 
 const ProfilePage = () => {
@@ -18,6 +19,7 @@ const ProfilePage = () => {
     // handle the user log out
     const LogOut = () => {
         localStorage.removeItem('jwtToken');
+        localStorage.removeItem(`${user._id}`)
         window.location.reload();
     }
 
@@ -65,7 +67,7 @@ const ProfilePage = () => {
 
         try{ 
             
-            const res = await axios.put('https://localhost:3001/user/update', {
+            const res = await axios.put('http://localhost:3001/user/update', {
                 u_id: user._id,
                 u_name: newName,
                 u_email: newEmail,
@@ -100,7 +102,7 @@ const ProfilePage = () => {
 
     return(
         <>        
-            <form onSubmit={saveUpdate} className="w-full h-[61vh] flex  flex-col justify-center items-center p-5 ">
+            <form onSubmit={saveUpdate} className="w-full h-[55vh] flex  flex-col justify-center items-center p-5 lg:my-4">
                 <div className="w-full flex justify-center my-2 lg:my-4">
                     <h2 className="text-3xl lg:text-5xl">User profile</h2>
                 </div>
@@ -163,8 +165,9 @@ const ProfilePage = () => {
                     <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="submit" className="bg-green-500 text-white p-1 w-20 rounded-2xl lg:p-2 lg:text-lg">Save</motion.button>
                     <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="button" onClick={(e) => handleCancel(e)} className="bg-red-500 text-white p-1 w-20 rounded-2xl lg:p-2 lg:text-lg">Cancel</motion.button>
                 </div>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="button" onClick={() => LogOut()} className="hover:text-red-500 text-xl my-2 lg:my-4">Logout<i className="fa-solid fa-right-from-bracket ml-2"></i></motion.button>
+                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="button" onClick={() => LogOut()} className="hover:text-red-500 text-xl mt-2 lg:my-4">Logout<i className="fa-solid fa-right-from-bracket ml-2"></i></motion.button>
             </form>
+            <WishList />
         </>
 
     );

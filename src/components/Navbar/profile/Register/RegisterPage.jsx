@@ -30,7 +30,7 @@ const RegisterPage = () => {
         e.preventDefault();
         try{
 
-            fetch('https://localhost:3001/user/register', {
+            fetch('http://localhost:3001/user/register', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'

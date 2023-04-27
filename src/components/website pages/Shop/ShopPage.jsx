@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ShopPage = () => {
 
     const [prodctArray, setProdct] = useState([]);
 
     useEffect(() => {
-        fetch('https://localhost:3001/shop/product')
-        .then( response => response.json())
-        .then(data => {
-            setProdct(data)
+        axios.get('http://localhost:3001/shop/product')
+        .then(response => {
+            setProdct(response.data)
+        })
+        .catch(err => {
+            console.log(err.message)
         })
     },[])
 
