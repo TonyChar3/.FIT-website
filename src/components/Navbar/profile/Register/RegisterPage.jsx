@@ -39,7 +39,7 @@ const RegisterPage = () => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                
                 if(data){
                     navigate('/login')
                 }

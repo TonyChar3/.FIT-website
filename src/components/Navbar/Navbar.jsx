@@ -3,6 +3,8 @@ import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CartDrawer from './Cart/cart_drawer/CartDrawer';
 import { UserAuth } from '../../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+
 
 
 const Navbar = () => {
@@ -10,8 +12,12 @@ const Navbar = () => {
     // import the current logged in user from Context
     const { user } = UserAuth();
 
+    const dispatch = useDispatch();
+    const cartCounter = useSelector(state => state.cart.amount);
+
     const [navMenu, setNavMenu] = useState(false);// state of the nav menu tabs
     const [activeCart, setCart] = useState(false);// state of the cart drawer
+
   
     // handle the click of the hamburger icon
     const HandleMenuClick = () => {
@@ -70,9 +76,11 @@ const Navbar = () => {
                 <div className="lg:block hidden lg:flex lg:flex-row lg:justify-between lg:my-auto">
                     <Link to={user? '/profile' : '/login'}><motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-solid fa-user text-3xl cursor-pointer"></motion.i></Link>
                     <motion.i whileTap={{ scale: 0.90 }} whileHover={{ scale: 1.1 }} className="fa-regular fa-cart-shopping text-4xl hidden lg:inline lg:mr-20 cursor-pointer" onClick={(e) => HandleCartClick(e)}></motion.i>
+                    <span className="lg:absolute lg:right-[4%] lg:top-3 lg:text-xl lg:p-1 lg:rounded-xl">{cartCounter}</span>
                 </div>
                 <div className="mr-1 justify-self-end self-center lg:hidden">
                     <motion.i whileTap={{ scale: 0.90 }} className="fa-regular fa-cart-shopping text-3xl md:text-4xl" onClick={HandleCartClick}></motion.i>
+                    <span className="absolute right-[.1em] top-0 text-xl p-1 rounded-xl">{cartCounter}</span>
                 </div>
             </nav>
             <CartDrawer activate={activeCart} closing={HandleCartClick} />

@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCartItems, calculateTotals } from '../../../store/slice/cartSlice';
 
 const ShopPage = () => {
+
+    const dispatch = useDispatch();
+    const cartItems = useSelector(state => state.cart.cartItems)
 
     const [prodctArray, setProdct] = useState([]);
 
@@ -15,6 +20,10 @@ const ShopPage = () => {
             console.log(err.message)
         })
     },[])
+
+    useEffect(() => {
+        dispatch(getCartItems());
+    }, [dispatch])
 
     return(
         <>

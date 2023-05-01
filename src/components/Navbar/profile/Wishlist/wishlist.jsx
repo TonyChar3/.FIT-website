@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const WishList = () => {
 
@@ -17,7 +18,7 @@ const WishList = () => {
         
         const fetchWishList = async() => {
             
-            const token = localStorage.getItem('jwtToken');
+            const token = Cookies.get('fit-user');
             
             try{
                 const response = await axios.get('http://localhost:3001/wishlist/wishlist', {
@@ -28,11 +29,9 @@ const WishList = () => {
                 });
 
                 if(response.data.message){
-                    console.log(response.data)
                     setEmptyList(response.data)
                     
                 } else if(response.data[0]){
-                    console.log(response.data)
                     setWishList(response.data)
                 }
     

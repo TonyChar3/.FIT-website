@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { UserAuth } from '../../../../context/AuthContext';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { addItem, calculateTotals } from '../../../../store/slice/cartSlice';
+import Cookies from 'js-cookie';
 
 
 
@@ -14,7 +17,9 @@ const ProductPage = () => {
 
     const { id } = location.state
     
-    const token = localStorage.getItem('jwtToken');
+    const token = Cookies.get('fit-user');
+
+    const dispatch = useDispatch();
 
     const [prodct, setProdct] = useState({})// the product 
     const [description, setDescription] = useState(false); // the description chevron state
@@ -22,15 +27,16 @@ const ProductPage = () => {
     const [Main, setMain] = useState(null);// the main product image
     const [heart, setHeart] = useState(false);// the wishlist button
 
-
+   
     useEffect(() => {
-
+        
         axios.get(`http://localhost:3001/shop/${id}`,{
             headers: {
                 'Content-Type':'application/json'
             }
         })
         .then(response => {
+            console.log(user)
             if(user){
                 const wishList = JSON.parse(localStorage.getItem(`${user._id}`)) || []
 
@@ -128,6 +134,32 @@ const ProductPage = () => {
         }
     }
 
+    // handle the add to cart
+    const handleAddToCart = (item) => {
+
+        const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+
+        dispatch(addItem(item))
+        dispatch(calculateTotals())
+        
+        axios.put('http://localhost:3001/cart/add-to-cart',{
+            prodct_id: item._id,
+            prodct_qty: 1
+        },
+        {
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization': `${token}`
+            }
+        })
+        .then(resp => {
+            console.log(resp)
+        })
+        .catch(err => {
+            console.log(err.message)
+        })
+    }
+    
     return(
         <div>
             <div className="flex flex-row p-3 justify-center border-b-2 border-black lg:w-1/2 lg:p-8">
@@ -181,15 +213,15 @@ const ProductPage = () => {
                             
                         </div>
                         <div className="flex flex-col justify-center items-center">
-                            <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="w-60 my-2 p-1 bg-gray-300 text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Add to cart</motion.button>
+                            <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} onClick={() => handleAddToCart(prodct)} className="w-60 my-2 p-1 bg-gray-300 text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Add to cart</motion.button>
                             <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="flex flex-row justify-center items-center w-60 my-2 p-1 bg-black text-white text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Buy with <i className="fa-brands fa-google-pay mx-2 text-2xl"></i></motion.button>
                             <Link to="/customerinfo" className="my-2 border-b-2 border-black text-center text-sm lg:text-lg">More payment options</Link>
-                            <div className={`lg:w-60 lg:flex lg:justify-center lg:items-center lg:mt-4 ${user? '' : 'lg:hidden hidden'}`}>
+                            <div className={`lg:w-60 lg:flex lg:justify-center lg:items-center lg:mt-4 ${user === null ? 'lg:hidden hidden' : 'hidden'}`}>
                                 <motion.i whileTap={{ scale: 0.90 }} onClick={() => handleWishListBtn()} className={`${heart? 'fa-solid fa-heart' : 'fa-light fa-heart-circle-plus'} text-xl transition-300 lg:text-2xl lg:cursor-pointer`}></motion.i>
                             </div>
                         </div>
                     </div>
-                    <div className={`w-60 flex justify-center items-center mt-4 ${user? '' : 'hidden'} lg:hidden`}>
+                    <div className={`w-60 flex justify-center items-center mt-4 ${user === null ? 'lg:hidden hidden' : 'lg:hidden'}`}>
                         <motion.i whileTap={{ scale: 0.90 }} onClick={() => handleWishListBtn()} className={`${heart? 'fa-solid fa-heart' : 'fa-light fa-heart-circle-plus'} text-xl transition-300 lg:text-3xl lg:cursor-pointer`}></motion.i>
                     </div>
                 </div>

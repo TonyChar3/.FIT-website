@@ -3,6 +3,7 @@ import { UserAuth } from '../../../../context/AuthContext';
 import { motion } from 'framer-motion';
 import WishList from '../Wishlist/wishlist';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const ProfilePage = () => {
 
@@ -18,8 +19,15 @@ const ProfilePage = () => {
     
     // handle the user log out
     const LogOut = () => {
-        localStorage.removeItem('jwtToken');
+
         localStorage.removeItem(`${user._id}`)
+
+        const oldToken = Cookies.get('fit-user')
+
+        if(oldToken){
+            Cookies.set('fit-user', oldToken, {expires: new Date(0) });
+        }
+
         window.location.reload();
     }
 
@@ -63,7 +71,7 @@ const ProfilePage = () => {
     // handle the save of the updated profile
     const saveUpdate = async(e) => {
        e.preventDefault();
-        const token = localStorage.getItem('jwtToken')
+        const token = Cookies.get('fit-user')
 
         try{ 
             

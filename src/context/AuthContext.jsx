@@ -1,5 +1,6 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const UserContext = createContext();
 
@@ -7,11 +8,12 @@ export const AuthContextProvider = ({ children }) => {
 
     const [user, setUser ] = useState({})
 
-    const token = localStorage.getItem('jwtToken');
+    const token = Cookies.get('fit-user');
     
     const LogIn = (u_email, u_passwd) => {
 
         try{
+
             fetch('http://localhost:3001/user/login', {
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
@@ -20,19 +22,24 @@ export const AuthContextProvider = ({ children }) => {
             .then(response => response.json())
             .then(data => {
                 if(data){
+                    console.log(data.token)
                     setUser(data)
-                    console.log(data)
 
                     const wishList = [];
 
                     data.user.wishlist.forEach(prodct => {
-                        wishList.push({ _id:prodct._id })
+                        wishList.push({ _id: prodct._id })
                     }) 
-
-                    console.log(wishList)
                     
                     localStorage.setItem(`${data.user._id}`, JSON.stringify(wishList))
-                    localStorage.setItem('jwtToken', data.token)
+
+                    const oldToken = Cookies.get('fit-customer')
+
+                    if(oldToken){
+                        Cookies.set('fit-customer', oldToken, {expires: new Date(0) });
+                    }
+
+                    Cookies.set('fit-user', data.token, { expires: 1/24, sameSite: 'strict' })
                 }
             })
         }catch(err){
@@ -49,11 +56,29 @@ export const AuthContextProvider = ({ children }) => {
         }
         })
         .then(resp => {
-            console.log(resp)
             setUser(resp.data)
         })
         .catch(err => {
             setUser(null)
+            
+            const isRefresh = Cookies.get('fit-customer')
+            console.log(isRefresh)
+            if(!isRefresh){
+                axios.get('http://localhost:3001/fit-user',{
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                })
+                .then(resp => {
+                    console.log(resp.data.token)
+                    Cookies.set('fit-customer', resp.data.token, { expires: 1/24, sameSite: 'strict' })
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+            }
+
         })
     },[token])
 
