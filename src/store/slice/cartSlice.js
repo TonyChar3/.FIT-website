@@ -38,7 +38,7 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addItem: (state, action) => {
-
+            
             const existItem = state.cartItems.find(item => item._id === action.payload._id)
 
             if(existItem){
@@ -46,6 +46,7 @@ const cartSlice = createSlice({
             } else {
                 const newItem = {
                     _id: action.payload._id,
+                    img: action.payload.images[0].img_url,
                     name: action.payload.name,
                     price: action.payload.prix,
                     qty: 1
@@ -57,11 +58,20 @@ const cartSlice = createSlice({
         },
         removeItem: (state, action) => {
             state.cartItems = state.cartItems.filter((item) => item._id !== action.payload._id)
+
+            state.cartItems.forEach((items) => {
+                state.total = 0;
+                state.amount = 0;
+
+                state.amount += 1
+                state.total += Number(items.price * items.qty)
+            })
         },
         incrementQty: (state, action) => {
             state.cartItems.find((item) => {
                 if(item._id === action.payload._id){
                     item.qty += 1
+                    state.total += Number(item.price)
                 }
             })
         },
@@ -71,9 +81,11 @@ const cartSlice = createSlice({
 
                     if(item.qty > 0){
                         item.qty -= 1
-
+                        state.total -= Number(item.price)
                         if(item.qty === 0){
                             state.cartItems = state.cartItems.filter((item) => item._id !== action.payload._id)
+                            state.amount -= 1
+                            state.total -= Number(item.price * item.qty)
                         }
                     }
                 } 
@@ -81,14 +93,14 @@ const cartSlice = createSlice({
         },
         calculateTotals: (state) => {
             
-            let newAmount = 0;
+            state.amount = 0;
+            state.total = 0;
     
             state.cartItems.forEach((items) => {
     
-                newAmount += 1
+                state.amount += 1
+                state.total += Number(items.price * items.qty)
             })
-    
-            state.amount = newAmount;
 
         }
     },
@@ -104,7 +116,7 @@ const cartSlice = createSlice({
             state.amount === 0 ? 
             action.payload.forEach((item) => {
                 state.amount += 1
-                state.total += item.price
+                state.total += Number(item.price * item.qty)
             })
             :
             state.cartItems.length === 0 ?

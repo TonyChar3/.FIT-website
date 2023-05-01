@@ -83,7 +83,7 @@ const Footer = () => {
                             <motion.i whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="fa-brands fa-instagram text-3xl mx-4 lg:my-4 lg:text-4xl cursor-pointer"></motion.i>
                             <motion.i whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="fa-brands fa-tiktok text-3xl mx-4 lg:my-4 lg:text-4xl cursor-pointer"></motion.i>
                         </div>
-                        <h4 className="text-xl my-1 lg:text-2xl lg:my-4"><i className="fa-regular fa-envelope lg:text-3xl lg:mr-2 lg:fa hidden sm:inline"></i>email@random.com</h4>
+                        <h4 className="text-xl my-1 lg:text-2xl lg:my-4"><i className="fa-regular fa-envelope lg:text-3xl lg:mr-2 lg:fa hidden sm:inline"></i>FIT@email.com</h4>
                         <h4 className="text-xl my-1 lg:text-2xl lg:my-4"><i className="fa-regular fa-phone lg:text-3xl lg:mr-2 lg:fa hidden sm:inline"></i>(444) 444-4444</h4>
                     </div>
                 </div>

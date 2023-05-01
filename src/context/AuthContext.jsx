@@ -22,7 +22,6 @@ export const AuthContextProvider = ({ children }) => {
             .then(response => response.json())
             .then(data => {
                 if(data){
-                    console.log(data.token)
                     setUser(data)
 
                     const wishList = [];
@@ -62,7 +61,7 @@ export const AuthContextProvider = ({ children }) => {
             setUser(null)
             
             const isRefresh = Cookies.get('fit-customer')
-            console.log(isRefresh)
+            
             if(!isRefresh){
                 axios.get('http://localhost:3001/fit-user',{
                     headers: {
@@ -71,7 +70,6 @@ export const AuthContextProvider = ({ children }) => {
                     withCredentials: true
                 })
                 .then(resp => {
-                    console.log(resp.data.token)
                     Cookies.set('fit-customer', resp.data.token, { expires: 1/24, sameSite: 'strict' })
                 })
                 .catch(err => {

@@ -153,7 +153,7 @@ const ProductPage = () => {
             }
         })
         .then(resp => {
-            console.log(resp)
+            console.log(resp.data.msg)
         })
         .catch(err => {
             console.log(err.message)

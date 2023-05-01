@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCartItems, calculateTotals } from '../../../store/slice/cartSlice';
+import { useDispatch } from 'react-redux';
+import { getCartItems } from '../../../store/slice/cartSlice';
 
 const ShopPage = () => {
 
     const dispatch = useDispatch();
-    const cartItems = useSelector(state => state.cart.cartItems)
 
     const [prodctArray, setProdct] = useState([]);
 
@@ -32,8 +31,8 @@ const ShopPage = () => {
                 prodctArray.map((prodct, i) => (
                    
                         <div key={i} className="w-10/12 flex flex-col justify-center items-center">
-                            <div className="w-5/6 lg:w-3/6 my-2 border border-black rounded-sm">
-                                <Link to="/productpage" state={{ id: prodct._id }}><img src={prodct.images[0].img_url} alt="Product Image" width="500" height="500" className="w-full h-[229px] object-cover object-center" /></Link>   
+                            <div className="w-5/6 lg:w-3/6 my-2 border border-black rounded-xl">
+                                <Link to="/productpage" state={{ id: prodct._id }}><img src={prodct.images[0].img_url} alt="Product Image" width="500" height="500" className="w-full h-[229px] object-cover object-center rounded-xl" /></Link>   
                             </div>
                                 
                             <div className="flex flex-col justify-center items-center">
