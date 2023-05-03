@@ -48,6 +48,7 @@ const cartSlice = createSlice({
                     _id: action.payload._id,
                     img: action.payload.images[0].img_url,
                     name: action.payload.name,
+                    stripe_ID: action.payload.stripe_ID,
                     price: action.payload.prix,
                     qty: 1
                 }
@@ -59,13 +60,18 @@ const cartSlice = createSlice({
         removeItem: (state, action) => {
             state.cartItems = state.cartItems.filter((item) => item._id !== action.payload._id)
 
-            state.cartItems.forEach((items) => {
-                state.total = 0;
-                state.amount = 0;
+            if(state.cartItems.length === 0){
+                state.total = 0
+                state.amount = 0
+            } else {
+                state.cartItems.forEach((items) => {
+                    state.total = 0;
+                    state.amount = 0;
 
-                state.amount += 1
-                state.total += Number(items.price * items.qty)
-            })
+                    state.amount += 1
+                    state.total += Number(items.price * items.qty)
+                })
+            }
         },
         incrementQty: (state, action) => {
             state.cartItems.find((item) => {

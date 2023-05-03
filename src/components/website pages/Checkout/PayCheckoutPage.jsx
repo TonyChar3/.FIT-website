@@ -1,43 +1,63 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartItems } from '../../../store/slice/cartSlice';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { UserAuth } from '../../../context/AuthContext';
 
 
 const PayCheckoutPage = () => {
 
+    
+
     const dispatch = useDispatch();
+    const { user } = UserAuth();
     const cartItems = useSelector(store => store.cart.cartItems)
     const cartTotal = useSelector(store => store.cart.total)
-
+    const [ stripeUser, setStripeUser] = useState('');
+   
     // handle the stripe checkout session
     const handleCheckout = async() => {
 
-        try{
-            const session = axios.post('http://localhost:3001/stripe/create-checkout-session',{
-                items: cartItems
-            },
-            {
-                headers: {
-                    'Content-Type':'application/json'
-                }
-            });
-
-            if(session){
-                console.log(session)
+        axios.post('http://localhost:3001/stripe/create-payment-intent',{
+            items: cartItems
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer sk_test_51MzoWyAkdr7T3B0aoSV0giyra8rXmnulTswWEKu1XFJrsO9l0PmT5qdfX6P6HnQZIO3jWruIpzdLdqtCK0mcLHTB0093vrNzpx'
             }
-
-        } catch(err){
-            console.log(err)
-        }
+        })
+        .then(resp => {
+            if(resp.data.url){
+                window.location.href = resp.data.url
+            }
+        })
+        .catch(err => {
+            console.log(err.message)
+        })
     }
+
+    useEffect(() => {
+        if(user === null){
+
+            const BearerToken = Cookies.get('fit-customer')
+
+            const token = BearerToken.split(' ')[1]
+            
+            setStripeUser(token)
+        }else {
+            setStripeUser(user._id)
+        }
+
+    },[user])
 
     useEffect(() => {
         dispatch(getCartItems())
     },[dispatch])
-
+ 
     return(
         <div className="flex flex-col justify-center items-center mb-[50px] h-[55vh] lg:h-[80vh]">
             <div className={`flex flex-row w-full justify-center p-1 mt-5 lg:mt-10 lg:p-4 ${cartItems.length === 0? 'hidden' : ''}`}>
@@ -76,7 +96,7 @@ const PayCheckoutPage = () => {
                 <h3 className="text-xl p-1 lg:text-2xl lg:p-2">Total:</h3>
                 <p className="text-2xl lg:text-3xl">{cartTotal.toFixed(2)}$</p>
             </div>
-            <motion.button whileTap={{ scale: 0.70 }} onClick={() => handleCheckout()} className={`p-1 bg-black text-white w-40 rounded-lg my-3 lg:w-56 lg:text-xl lg:my-5 ${cartItems.length === 0? 'hidden' : ''}`}><Link to="/success">Pay Now</Link></motion.button>
+            <motion.button whileTap={{ scale: 0.70 }} onClick={() => handleCheckout()} className={`p-1 bg-black text-white w-40 rounded-lg my-3 lg:w-56 lg:text-xl lg:my-5 ${cartItems.length === 0? 'hidden' : ''}`}>Pay Now</motion.button>
         </div>
     );
 }
