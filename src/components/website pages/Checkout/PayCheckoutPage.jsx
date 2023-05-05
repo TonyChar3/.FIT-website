@@ -22,7 +22,8 @@ const PayCheckoutPage = () => {
     const handleCheckout = async() => {
 
         axios.post('http://localhost:3001/stripe/create-payment-intent',{
-            items: cartItems
+            items: cartItems,
+            userID: stripeUser
         },
         {
             headers: {
