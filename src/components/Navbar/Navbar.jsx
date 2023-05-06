@@ -12,7 +12,6 @@ const Navbar = () => {
     // import the current logged in user from Context
     const { user } = UserAuth();
 
-    const dispatch = useDispatch();
     const cartCounter = useSelector(state => state.cart.amount);
 
     const [navMenu, setNavMenu] = useState(false);// state of the nav menu tabs

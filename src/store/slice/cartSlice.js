@@ -3,12 +3,16 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 
-
-
-export const getCartItems = createAsyncThunk('cart/getCartItems', async() => {
+export const getCartItems = createAsyncThunk('cart/getCartItems', async(userInfo) => {
     try{
         const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
-        const response = await axios.get('http://localhost:3001/cart/items',{
+        const hash = Cookies.get('fit-hash') || ""
+        const userID = userInfo || ""
+        const response = await axios.post('http://localhost:3001/cart/items',{
+            hash: hash,
+            userId: userID
+        },
+        {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${token}`

@@ -33,9 +33,11 @@ export const AuthContextProvider = ({ children }) => {
                     localStorage.setItem(`${data.user._id}`, JSON.stringify(wishList))
 
                     const oldToken = Cookies.get('fit-customer')
+                    const oldHash = Cookies.get('fit-hash')
 
-                    if(oldToken){
+                    if(oldToken && oldHash){
                         Cookies.set('fit-customer', oldToken, {expires: new Date(0) });
+                        Cookies.set('fit-hash', oldHash, {expires: new Date(0) });
                     }
 
                     Cookies.set('fit-user', data.token, { expires: 1/24, sameSite: 'strict' })
@@ -48,11 +50,11 @@ export const AuthContextProvider = ({ children }) => {
 
     useEffect(() => {
         
-        axios.get('http://localhost:3001/user/current', {
+        axios.get('https://f88b-2607-fa49-d344-6500-9d5b-8dbc-66d0-efcf.ngrok.io/user/current', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${token}`
-        }
+            }
         })
         .then(resp => {
             setUser(resp.data)
@@ -71,6 +73,7 @@ export const AuthContextProvider = ({ children }) => {
                 })
                 .then(resp => {
                     Cookies.set('fit-customer', resp.data.token, { expires: 1/24, sameSite: 'strict' })
+                    Cookies.set('fit-hash', resp.data.hashToken, { expires: 1/24, sameSite: 'strict' })
                 })
                 .catch(err => {
                     console.log(err.message)

@@ -138,11 +138,13 @@ const ProductPage = () => {
     const handleAddToCart = (item) => {
 
         const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+        const hashID = Cookies.get('fit-hash') || user._id
 
         dispatch(addItem(item))
         dispatch(calculateTotals())
         
         axios.put('http://localhost:3001/cart/add-to-cart',{
+            cartID: hashID,
             prodct_id: item._id,
             prodct_qty: 1
         },

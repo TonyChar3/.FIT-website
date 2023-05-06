@@ -44,11 +44,9 @@ const PayCheckoutPage = () => {
     useEffect(() => {
         if(user === null){
 
-            const BearerToken = Cookies.get('fit-customer')
-
-            const token = BearerToken.split(' ')[1]
+            const hash = Cookies.get('fit-hash');
             
-            setStripeUser(token)
+            setStripeUser(hash)
         }else {
             setStripeUser(user._id)
         }

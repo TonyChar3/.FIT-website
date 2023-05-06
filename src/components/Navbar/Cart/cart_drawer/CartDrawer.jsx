@@ -4,10 +4,13 @@ import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementQty, getCartItems, incrementQty, removeItem } from '../../../../store/slice/cartSlice.js';
+import { UserAuth } from '../../../../context/AuthContext.jsx';
 import axios from 'axios';
 
 const CartDrawer = ({activate, closing}) =>{
 
+    const { user } = UserAuth();
+    
     const dispatch = useDispatch();
 
     const cartItems = useSelector(state => state.cart.cartItems)
@@ -78,11 +81,13 @@ const CartDrawer = ({activate, closing}) =>{
     const handleItemDelete = (item) => {
 
         const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+        const hashID = Cookies.get('fit-hash') || user._id
 
         dispatch(removeItem(item))
 
         axios.delete('http://localhost:3001/cart/remove-item',{
             data: {
+                cartID: hashID,
                 prodct_id: item._id
             },
             headers: {
@@ -108,8 +113,8 @@ const CartDrawer = ({activate, closing}) =>{
     },[activate])
 
     useEffect(() => {
-        dispatch(getCartItems());
-    }, [dispatch])
+        dispatch(getCartItems(user));
+    }, [user])
 
     // ternary to toggle or not the drawer
     let toggleCartDrawer = activeDrawer? 'right-0' : '-right-full';
