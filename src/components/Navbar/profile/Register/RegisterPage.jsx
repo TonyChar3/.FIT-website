@@ -1,10 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { closeModal, showModal } from '../../../../store/slice/modalSlice';
+import axios from 'axios';
 
 const RegisterPage = () => {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
     // Set the States
     const [ username, setUsername ] = useState('');// The username input value
     const [ email, setEmail ] = useState('');// The email input value
@@ -26,37 +32,59 @@ const RegisterPage = () => {
     }
 
     // Register the user on submit
-    const registerUser = (e) => {
-        e.preventDefault();
-        try{
+    const registerUser = async(e) => {
 
-            fetch('http://localhost:3001/user/register', {
-                method: 'post',
+        e.preventDefault();
+
+        try{
+            const response = await axios.post('http://localhost:3001/user/register',{
+                username: username,
+                email: email,
+                password: password
+            },
+            {
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username, email: email, password: password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                
-                if(data){
-                    navigate('/login')
                 }
             })
+
+            if(response.data){
+                
+
+                dispatch(showModal(response.data.message))
+
+                setTimeout(() => {
+                    dispatch(closeModal())
+                    
+                },[3000])
+
+                navigate('/login')
+            }
+
             setEmail('')
             setUsername('')
             setPassword('')
 
 
         }catch(err){
-            console.log(err)
+            dispatch(showModal(err))
+            
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         }
     }
 
     return(
         <>
-            <form onSubmit={registerUser} className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px] lg:mt-10 lg:mb-[100px]">
+            <form 
+                onSubmit={registerUser} 
+                className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px] lg:mt-10 lg:mb-[100px]"
+
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.01 } }}
+            >
 
                 <div className="w-full flex flex-row justify-center p-2">
                     <h2 className="text-3xl lg:text-5xl">Register</h2>

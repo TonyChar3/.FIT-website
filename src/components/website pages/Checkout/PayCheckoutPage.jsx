@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartItems } from '../../../store/slice/cartSlice';
+import { showModal, closeModal } from '../../../store/slice/modalSlice';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { UserAuth } from '../../../context/AuthContext';
@@ -10,12 +11,13 @@ import { UserAuth } from '../../../context/AuthContext';
 
 const PayCheckoutPage = () => {
 
-    
-
     const dispatch = useDispatch();
+
     const { user } = UserAuth();
+
     const cartItems = useSelector(store => store.cart.cartItems)
     const cartTotal = useSelector(store => store.cart.total)
+    
     const [ stripeUser, setStripeUser] = useState('');
    
     // handle the stripe checkout session
@@ -37,7 +39,10 @@ const PayCheckoutPage = () => {
             }
         })
         .catch(err => {
-            console.log(err.message)
+            dispatch(showModal(err.message))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         })
     }
 
@@ -58,7 +63,13 @@ const PayCheckoutPage = () => {
     },[dispatch])
  
     return(
-        <div className="flex flex-col justify-center items-center mb-[50px] h-[55vh] lg:h-[80vh]">
+        <div 
+            className="flex flex-col justify-center items-center mb-[50px] h-[55vh] lg:h-[80vh]"
+            
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+        >
             <div className={`flex flex-row w-full justify-center p-1 mt-5 lg:mt-10 lg:p-4 ${cartItems.length === 0? 'hidden' : ''}`}>
                 <h2 className="text-3xl lg:text-5xl">Order summary</h2>
             </div>

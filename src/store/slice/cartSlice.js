@@ -123,16 +123,21 @@ const cartSlice = createSlice({
             state.isLoading = false;
             state.cartItems = action.payload
             
-            state.amount === 0 ? 
-            action.payload.forEach((item) => {
-                state.amount += 1
-                state.total += Number(item.price * item.qty)
-            })
-            :
-            state.cartItems.length === 0 ?
-            state.amount = 0
-            :
-            ''
+            if(Array.isArray(action.payload)){
+                state.amount === 0 ? (
+                    action.payload.forEach((item) => {
+                        state.amount += 1
+                        state.total += Number(item.price * item.qty)
+                    })
+                ) : (
+                    state.cartItems.length <= 0 ?
+    
+                    state.amount = 0
+                    :
+                    ''
+                )
+            }
+
         })
         .addCase(getCartItems.rejected, (state) => {
             state.isLoading = true;

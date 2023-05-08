@@ -4,18 +4,21 @@ import { motion } from 'framer-motion';
 import WishList from '../Wishlist/wishlist';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { showModal, closeModal } from '../../../../store/slice/modalSlice';
 
 const ProfilePage = () => {
 
     // User auth Context
     const { user } = UserAuth();
+
+    const dispatch = useDispatch();
    
     const [edit, setEdit] = useState(false);// set editing mode
     const [newName, setName] = useState('');// New username state
     const [newEmail, setEmail] = useState('');// New email state
     const [newPasswd, setPasswd] = useState('');// New password state
     const [confirm, setConfirm] = useState('');// Confirm the password
-    const [error, setError] = useState('');// error
     
     // handle the user log out
     const LogOut = () => {
@@ -28,7 +31,12 @@ const ProfilePage = () => {
             Cookies.set('fit-user', oldToken, {expires: new Date(0) });
         }
 
-        window.location.reload();
+        dispatch(showModal("Logging out..."))
+        setTimeout(() => {
+            dispatch(closeModal())
+            window.location.reload();
+        },[3000])
+        
     }
 
     // handle the edit event

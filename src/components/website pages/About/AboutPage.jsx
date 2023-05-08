@@ -5,7 +5,13 @@ const AboutPage = () => {
     const mapKey = import.meta.env.VITE_FIT_MAP_EMBED;
 
     return(
-        <div className="flex flex-col mt-2 mb-[50px] lg:mb-[100px] lg:mt-5">
+        <div 
+            className="flex flex-col mt-2 mb-[50px] lg:mb-[100px] lg:mt-5"
+            
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+        >
             <div className="flex flex-row justify-center p-3 w-full border-b-2 border-black lg:w-1/2">
                 <h2 className="text-3xl lg:text-5xl">More about us...</h2>
             </div>

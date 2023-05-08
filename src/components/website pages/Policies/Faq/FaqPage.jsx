@@ -35,8 +35,6 @@ const FaqPage = () => {
         setQ5(arrowQ5 => !arrowQ5)
     }
 
-
-
     return(
         <div className="mt-4 mb-[50px]">
             <div className="flex flex-row justify-center w-full p-2 border-b-2 border-black lg:w-1/2 lg:p-4">

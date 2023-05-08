@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { decrementQty, getCartItems, incrementQty, removeItem } from '../../../../store/slice/cartSlice.js';
 import { UserAuth } from '../../../../context/AuthContext.jsx';
 import axios from 'axios';
+import { showModal, closeModal } from '../../../../store/slice/modalSlice.js';
 
 const CartDrawer = ({activate, closing}) =>{
 
@@ -13,7 +14,7 @@ const CartDrawer = ({activate, closing}) =>{
     
     const dispatch = useDispatch();
 
-    const cartItems = useSelector(state => state.cart.cartItems)
+    const cartItems = useSelector(state => state.cart.cartItems) || []
 
     const [activeDrawer, setDrawer] = useState(false); // state of the drawer
     const [activeBlackScreen, setBlackScreen] = useState(false); // state of the black screen behind the drawer
@@ -21,88 +22,99 @@ const CartDrawer = ({activate, closing}) =>{
 
     // handle the click to close the drawer
     const HandleCloseDrawer = () => {
+
         setDrawer(activeDrawer => !activeDrawer)
+
         setTimeout(() => {
             closing(activeDrawer => !activeDrawer)
         },300)
     }
 
     // handle the minus
-    const handleQuantityMinus = (item) => {
+    const handleQuantityMinus = async(item) => {
 
-        const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+        try{
 
-        dispatch(decrementQty(item))
+            const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+            const hashID = Cookies.get('fit-hash') || user._id
+    
+            dispatch(decrementQty(item))
+            
+            await axios.put('http://localhost:3001/cart/modify-item',{
+                cartID: hashID,
+                prodct_id: item._id,
+                modif_action: 'decrement'
+            },
+            {
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': `${token}`
+                }
+            })
 
-        axios.put('http://localhost:3001/cart/modify-item',{
-            prodct_id: item._id,
-            modif_action: 'decrement'
-        },
-        {
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization': `${token}`
-            }
-        })
-        .then(resp => {
-            console.log(resp.data.msg)
-        })
-        .catch(err => {
-            console.log(err.message)
-        })
+        } catch(err){
+            console.log(err)
+        }
     }
 
     // handle the plus
-    const handleQuantityPlus = (item) => {
+    const handleQuantityPlus = async(item) => {
 
-        const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+        try{
+            const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+            const hashID = Cookies.get('fit-hash') || user._id
+    
+            dispatch(incrementQty(item))
 
-        dispatch(incrementQty(item))
+            await axios.put('http://localhost:3001/cart/modify-item',{
+                cartID: hashID, 
+                prodct_id: item._id,
+                modif_action: 'increment'
+            },{
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': `${token}`
+                }
+            });
 
-        axios.put('http://localhost:3001/cart/modify-item',{
-            prodct_id: item._id,
-            modif_action: 'increment'
-        },
-        {
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization': `${token}`
-            }
-        })
-        .then(resp => {
-            console.log(resp.data.msg)
-        })
-        .catch(err => {
-            console.log(err.message)
-        })
+        } catch(err){
+            console.log(err)
+        }
+
     }
 
     // handle the delete item from the cart
-    const handleItemDelete = (item) => {
+    const handleItemDelete = async(item) => {
 
-        const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
-        const hashID = Cookies.get('fit-hash') || user._id
+        try{
+            const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
+            const hashID = Cookies.get('fit-hash') || user._id
+    
+            dispatch(removeItem(item))
 
-        dispatch(removeItem(item))
+            const response = await axios.delete('http://localhost:3001/cart/remove-item',{
+                data: {
+                    cartID: hashID,
+                    prodct_id: item._id                   
+                },
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`                   
+                }
+            })
 
-        axios.delete('http://localhost:3001/cart/remove-item',{
-            data: {
-                cartID: hashID,
-                prodct_id: item._id
-            },
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`
+            if(response){
+                dispatch(showModal(response.data.message))
+
+                setTimeout(() => {
+                    dispatch(closeModal())
+                },[5000])
             }
-        })
-        .then(resp => {
-            if(resp){
-                console.log(resp)
-            }
-        })
-        .catch(err => {
+
+        } catch(err){
             console.log(err)
-        })
+        }
+
     }
 
     useEffect(() => {
@@ -130,13 +142,8 @@ const CartDrawer = ({activate, closing}) =>{
                         <motion.i whileTap={{ scale: 0.70 }} className="fa-sharp fa-solid fa-xmark text-3xl ml-4 p-1 cursor-pointer lg:text-4xl md:text-4xl" onClick={HandleCloseDrawer}></motion.i>
                     </div>
                     <div className="flex flex-col justify-around items-center w-full lg:w-3/4 lg:mx-auto my-1">
-                        {
-                            cartItems.length === 0?
-                            <div className="flex flex-col justify-around h-40 lg:justify-center lg:items-center">
-                                <h2 className="text-3xl lg:text-3xl md:text-4xl lg:text-center lg:mb-2">Your cart is empty</h2>
-                                <motion.button onClick={HandleCloseDrawer} whileTap={{ scale: 0.90 }} className="p-2 mx-auto my-1 text-lg text-white rounded-xl bg-black lg:text-xl md:text-2xl"><Link to="/shop">go back shopping</Link></motion.button>
-                            </div>
-                            :
+                        { 
+                            cartItems && cartItems.length > 0?
                                 cartItems.map((prodct,i) => (
                                     <div key={i} className="flex flex-row justify-around items-center w-full p-2 my-2">
                                         <div className="w-2/6 h-[100px]">
@@ -162,14 +169,20 @@ const CartDrawer = ({activate, closing}) =>{
 
                                     </div>
                                 ))
+                            :
+                                <div className="flex flex-col justify-around h-40 lg:justify-center lg:items-center">
+                                    <h2 className="text-3xl lg:text-3xl md:text-4xl lg:text-center lg:mb-2">Your cart is empty</h2>
+                                    <motion.button onClick={HandleCloseDrawer} whileTap={{ scale: 0.90 }} className="p-2 mx-auto my-1 text-lg text-white rounded-xl bg-black lg:text-xl md:text-2xl"><Link to="/shop">go back shopping</Link></motion.button>
+                                </div>
                         }
                         {
-                            cartItems.length === 0?
-                            ''
-                            :
+                            cartItems.length > 0?
                             <div className="w-full flex flex-row justify-center items-center">
                                 <Link to="/checkoutpay"><motion.button whileTap={{ scale: 0.90 }} onClick={HandleCloseDrawer} className="bg-black text-white p-1 w-40 rounded-xl my-2 lg:w-60 lg:text-lg lg:my-3">Checkout</motion.button></Link>
                             </div>
+                            :
+                            ''
+
                         }
                     </div>
 

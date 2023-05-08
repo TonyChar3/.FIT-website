@@ -18,6 +18,7 @@ import ErrorCheckoutPage from '../components/website pages/Checkout/Error/ErrorC
 import { AuthContextProvider } from '../context/AuthContext';
 import ProtectedRoutes from '../context/protectedRoutes';
 import ProfilePage from '../components/Navbar/profile/User/profilePage';
+import AlertModal from '../components/modal/modal';
 
 
 function App() {
@@ -48,10 +49,9 @@ function App() {
           <Route path="/profile" element={ <ProtectedRoutes> <ProfilePage /> </ProtectedRoutes> } />
         </Routes>
         </AnimatePresence>
+        
         <Footer />
       </AuthContextProvider>
-
-      
     </>
 
     

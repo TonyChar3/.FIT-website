@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { UserAuth } from '../../../../context/AuthContext';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { showModal, closeModal } from '../../../../store/slice/modalSlice';
 import { addItem, calculateTotals } from '../../../../store/slice/cartSlice';
 import Cookies from 'js-cookie';
 
@@ -26,8 +27,9 @@ const ProductPage = () => {
     const [SecImg, setImg] = useState([]);// the image array 
     const [Main, setMain] = useState(null);// the main product image
     const [heart, setHeart] = useState(false);// the wishlist button
+    const [stripeUser, setStripeUser] = useState('');
 
-   
+    
     useEffect(() => {
         
         axios.get(`http://localhost:3001/shop/${id}`,{
@@ -36,7 +38,7 @@ const ProductPage = () => {
             }
         })
         .then(response => {
-            console.log(user)
+            
             if(user){
                 const wishList = JSON.parse(localStorage.getItem(`${user._id}`)) || []
 
@@ -44,13 +46,35 @@ const ProductPage = () => {
 
                 setHeart(isAwish)
             }
+
             setMain(response.data.images[0].img_url)
+
             setImg(response.data.images)
+
             setProdct(response.data) 
         })
         .catch(error => {
-            console.log(error.message)
+
+            dispatch(showModal(error.message))
+
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         })
+
+    },[user])
+
+    useEffect(() => {
+        if(user === null){
+
+            const hash = Cookies.get('fit-hash');
+            
+            setStripeUser(hash)
+
+        }else {
+            
+            setStripeUser(user._id)
+        }
 
     },[user])
 
@@ -91,15 +115,26 @@ const ProductPage = () => {
             });
 
             if(send){
+
+                dispatch(showModal(send.data.message))
+
                 const wishList = JSON.parse(localStorage.getItem(`${user._id}`)) || [];
 
                 const updateList = [...wishList, { _id: id}]
 
                 localStorage.setItem(`${user._id}`, JSON.stringify(updateList))
+                setTimeout(() => {
+                    dispatch(closeModal())
+                },[5000])
             }
 
         } catch(err){
-            console.log(err.message)
+
+            dispatch(showModal(err.message))
+
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         }
     }
 
@@ -117,20 +152,36 @@ const ProductPage = () => {
 
             if(send){
 
-                console.log(send.data.message)
+                dispatch(showModal(send.data.message))
+
                 const wishList = JSON.parse(localStorage.getItem(`${user._id}`)) || [];
 
                 const updateList = wishList.filter(wish => wish._id.toString() !== id.toString());
 
                 if(updateList.length === 0){
-                    localStorage.removeItem(`${user._id}`)
+
+                    setTimeout(() => {
+                        dispatch(closeModal())
+                        localStorage.removeItem(`${user._id}`)
+                    },[5000])
+
+                    
                 } else {
-                    localStorage.setItem(`${user._id}`, JSON.stringify(updateList))
+
+                    setTimeout(() => {
+                        dispatch(closeModal())
+                        localStorage.setItem(`${user._id}`, JSON.stringify(updateList))
+                    },[5000])
                 }
             }
 
         } catch(err){
-            console.log(err.message)
+
+            dispatch(showModal(err.message))
+
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         }
     }
 
@@ -155,15 +206,67 @@ const ProductPage = () => {
             }
         })
         .then(resp => {
-            console.log(resp.data.msg)
+            dispatch(showModal(resp.data.msg))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[3000])
+            
         })
         .catch(err => {
-            console.log(err.message)
+            dispatch(showModal(err.message))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
+        })
+    }
+
+    // handle fast checkout for a single product
+    const handleFastCheckout = (item) => {
+
+        let itemsArray = [];
+
+        const newItem = {
+            _id: item._id,
+            img: item.images[0].img_url,
+            name: item.name,
+            stripe_ID: item.stripe_ID,
+            price: item.prix,
+            qty: 1
+        }
+
+        if(newItem){
+            itemsArray.push(newItem)
+        }
+
+        axios.post('http://localhost:3001/stripe/create-payment-intent',{
+            items: itemsArray,
+            userID: stripeUser
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer sk_test_51MzoWyAkdr7T3B0aoSV0giyra8rXmnulTswWEKu1XFJrsO9l0PmT5qdfX6P6HnQZIO3jWruIpzdLdqtCK0mcLHTB0093vrNzpx'
+            }
+        })
+        .then(resp => {
+            if(resp.data.url){
+                window.location.href = resp.data.url
+            }
+        })
+        .catch(err => {
+            dispatch(showModal(err.message))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         })
     }
     
     return(
-        <div>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+        >
             <div className="flex flex-row p-3 justify-center border-b-2 border-black lg:w-1/2 lg:p-8">
                 <h2 className="text-3xl lg:text-5xl">{prodct.name}</h2>
             </div>
@@ -209,15 +312,13 @@ const ProductPage = () => {
                         </div>
                     </div>
                     
-                    <div className="lg:h-full lg:flex lg:flex-col lg:justify-around lg:items-center">
+                    <div className="lg:h-full lg:flex lg:flex-col lg:justify-center lg:items-center">
                         <div className="flex flex-row my-4 justify-center">
                             <h4 className="text-2xl lg:text-5xl">{prodct.prix}$</h4>
-                            
                         </div>
                         <div className="flex flex-col justify-center items-center">
                             <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} onClick={() => handleAddToCart(prodct)} className="w-60 my-2 p-1 bg-gray-300 text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Add to cart</motion.button>
-                            <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} className="flex flex-row justify-center items-center w-60 my-2 p-1 bg-black text-white text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Buy with <i className="fa-brands fa-google-pay mx-2 text-2xl"></i></motion.button>
-                            <Link to="/customerinfo" className="my-2 border-b-2 border-black text-center text-sm lg:text-lg">More payment options</Link>
+                            <motion.button whileTap={{ scale: 0.70 }} whileHover={{ scale: 1.1 }} onClick={() => handleFastCheckout(prodct)} className="flex flex-row justify-center items-center w-60 my-2 p-1 bg-black text-white text-lg rounded-xl lg:w-80 lg:text-2xl lg:p-2 lg:my-3">Buy now</motion.button>
                             <div className={`lg:w-60 lg:flex lg:justify-center lg:items-center lg:mt-4 ${user === null ? 'lg:hidden hidden' : 'hidden'}`}>
                                 <motion.i whileTap={{ scale: 0.90 }} onClick={() => handleWishListBtn()} className={`${heart? 'fa-solid fa-heart' : 'fa-light fa-heart-circle-plus'} text-xl transition-300 lg:text-2xl lg:cursor-pointer`}></motion.i>
                             </div>
@@ -229,7 +330,7 @@ const ProductPage = () => {
                 </div>
                 
 
-        </div>
+        </motion.div>
     );
 }
 

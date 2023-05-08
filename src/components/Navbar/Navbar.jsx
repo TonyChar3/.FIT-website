@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CartDrawer from './Cart/cart_drawer/CartDrawer';
 import { UserAuth } from '../../context/AuthContext';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import AlertModal from '../modal/modal';
 
 
 
@@ -33,6 +34,7 @@ const Navbar = () => {
 
     return(
         <>
+            
             <nav className="grid lg:grid-cols-3 grid-cols-3 p-3 sticky z-10 top-0 left-0 w-full border-b-2 border-black bg-white md:p-4">
                 <div className="ml-1 self-center lg:hidden">
                     <i onClick={HandleMenuClick} className={`fa-sharp fa-solid fa-${navMenu? 'xmark' : 'bars'} text-3xl md:text-4xl ${navMenu? 'rotate-180' : ''} duration-300`}></i>
@@ -81,8 +83,11 @@ const Navbar = () => {
                     <motion.i whileTap={{ scale: 0.90 }} className="fa-regular fa-cart-shopping text-3xl md:text-4xl" onClick={HandleCartClick}></motion.i>
                     <span className="absolute right-[.1em] top-0 text-xl p-1 rounded-xl">{cartCounter}</span>
                 </div>
+                <AlertModal />
             </nav>
+            
             <CartDrawer activate={activeCart} closing={HandleCartClick} />
+            
             <Outlet />
         </>
 

@@ -2,7 +2,13 @@ import { motion } from 'framer-motion';
 
 const ContactPage = () => {
     return(
-        <form className="flex flex-col items-center justify-center mt-5 mb-[50px] lg:w-2/6 lg:mx-auto">
+        <motion.form 
+            className="flex flex-col items-center justify-center mt-5 mb-[50px] lg:w-2/6 lg:mx-auto"
+            
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+        >
             <div className="w-full flex flex-row justify-center my-4 lg:justify-start">
                 <motion.input whileHover={{ scale: 1.1 }} whileFocus={{ scale: 1.1 }} type="text" className="p-2 w-60 border-[1px] border-black rounded-lg text-md outline-none lg:w-[70%] lg:p-3" placeholder="Your Name"/>
             </div >
@@ -15,7 +21,7 @@ const ContactPage = () => {
             <div className="w-full flex flex-row justify-center my-4">
                 <motion.button whileTap={{ scale: 0.90 }} className="bg-black text-white w-40 p-1 rounded-lg text-lg lg:text-2xl lg:w-60" type="button">Submit</motion.button>
             </div>
-        </form>
+        </motion.form>
     );
 }   
 

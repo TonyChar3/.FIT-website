@@ -1,6 +1,8 @@
 import { useContext, createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { showModal, closeModal } from '../store/slice/modalSlice.js';
 
 const UserContext = createContext();
 
@@ -8,49 +10,64 @@ export const AuthContextProvider = ({ children }) => {
 
     const [user, setUser ] = useState({})
 
+    const dispatch = useDispatch();
+
     const token = Cookies.get('fit-user');
     
-    const LogIn = (u_email, u_passwd) => {
+    const LogIn = async(u_email, u_passwd) => {
 
         try{
 
-            fetch('http://localhost:3001/user/login', {
-                method: 'post',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email: u_email, password: u_passwd })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data){
-                    setUser(data)
-
-                    const wishList = [];
-
-                    data.user.wishlist.forEach(prodct => {
-                        wishList.push({ _id: prodct._id })
-                    }) 
-                    
-                    localStorage.setItem(`${data.user._id}`, JSON.stringify(wishList))
-
-                    const oldToken = Cookies.get('fit-customer')
-                    const oldHash = Cookies.get('fit-hash')
-
-                    if(oldToken && oldHash){
-                        Cookies.set('fit-customer', oldToken, {expires: new Date(0) });
-                        Cookies.set('fit-hash', oldHash, {expires: new Date(0) });
-                    }
-
-                    Cookies.set('fit-user', data.token, { expires: 1/24, sameSite: 'strict' })
+            const response = await axios.post('http://localhost:3001/user/login',{
+                email: u_email,
+                password: u_passwd
+            },{
+                headers: {
+                    'Content-Type': 'application/json',
                 }
             })
+
+            if(response.data){
+                
+                setUser(response.data.user)
+
+                const wishList = [];
+
+                response.data.user.wishlist.forEach(prodct => {
+                    wishList.push({ _id: prodct._id })
+                }) 
+                    
+                localStorage.setItem(`${response.data.user._id}`, JSON.stringify(wishList))
+
+                const oldToken = Cookies.get('fit-customer')
+                const oldHash = Cookies.get('fit-hash')
+
+                if(oldToken && oldHash){
+                    Cookies.set('fit-customer', oldToken, {expires: new Date(0) });
+                    Cookies.set('fit-hash', oldHash, {expires: new Date(0) });
+                }
+
+                Cookies.set('fit-user', response.data.token, { expires: 1/24, sameSite: 'strict' })
+
+                dispatch(showModal(response.data.message))
+                
+                setTimeout(() => {
+                    dispatch(closeModal())
+                },[5000])
+            }
         }catch(err){
-            console.log(err)
+
+            dispatch(showModal(err))
+
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         }
     }
 
     useEffect(() => {
         
-        axios.get('https://f88b-2607-fa49-d344-6500-9d5b-8dbc-66d0-efcf.ngrok.io/user/current', {
+        axios.get('http://localhost:3001/user/current', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${token}`

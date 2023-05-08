@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getCartItems } from '../../../store/slice/cartSlice';
+import { closeModal, showModal } from '../../../store/slice/modalSlice';
 
 const ShopPage = () => {
 
@@ -11,12 +12,19 @@ const ShopPage = () => {
     const [prodctArray, setProdct] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/shop/product')
+        axios.get('http://localhost:3001/shop/product',{
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
         .then(response => {
             setProdct(response.data)
         })
         .catch(err => {
-            console.log(err.message)
+            dispatch(showModal(err.message))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         })
     },[])
 
@@ -26,7 +34,13 @@ const ShopPage = () => {
 
     return(
         <>
-            <div className="grid grid-cols-1 md:grid-cols-2 md: lg:grid-cols-2 lg:w-3/4 lg:mx-auto gap-8 justify-items-center items-center my-[50px]">
+            <div 
+                className="grid grid-cols-1 md:grid-cols-2 md: lg:grid-cols-2 lg:w-3/4 lg:mx-auto gap-8 justify-items-center items-center my-[50px]"
+                
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.1 } }}
+            >
             {
                 prodctArray.map((prodct, i) => (
                    

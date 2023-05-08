@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { UserAuth } from '../../../../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { showModal, closeModal } from '../../../../store/slice/modalSlice.js';
 
 const SignInPage = () => {
 
     // to redirect to another route
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     // import Context user, LogIn function
     const { LogIn, user }= UserAuth();
@@ -39,7 +43,10 @@ const SignInPage = () => {
             await LogIn(email, passwd)
 
         }catch(err){
-            console.log(err)
+            dispatch(showModal(err))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         }
     };
 
@@ -52,7 +59,14 @@ const SignInPage = () => {
 
     return(
         <>
-            <form onSubmit={SignIn} className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px]">
+            <motion.form 
+                onSubmit={SignIn} 
+                className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px]"
+
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.1 } }}
+            >
 
                 <div className="w-full flex flex-row justify-center p-2">
                     <h2 className="text-3xl lg:text-5xl">Login</h2>
@@ -72,7 +86,7 @@ const SignInPage = () => {
                 <motion.button type="submit" whileTap={{ scale: 0.70 }} className="bg-black text-white w-40 p-1 rounded-lg text-lg my-2 lg:w-60 lg:text-xl lg:my-4">Submit</motion.button>
 
                 <Link to="/register" className="text-lg my-2 underline">No account?</Link>
-            </form>
+            </motion.form>
         </>
 
     );

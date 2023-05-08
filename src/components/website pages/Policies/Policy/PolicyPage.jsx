@@ -2,7 +2,13 @@
 
 const PolicyPage = () => {
     return(
-        <div className="flex flex-col justify-center items-center mb-[50px]">
+        <div 
+            className="flex flex-col justify-center items-center mb-[50px]"
+            
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+        >
             <div className="flex flex-row w-full justify-center p-4 border-b-2 border-black lg:w-1/2 lg:p-6">
                 <h2 className="text-3xl lg:text-5xl">Policy</h2>
             </div>
