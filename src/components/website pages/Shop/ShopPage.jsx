@@ -4,12 +4,16 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getCartItems } from '../../../store/slice/cartSlice';
 import { closeModal, showModal } from '../../../store/slice/modalSlice';
+import { UserAuth } from '../../../context/AuthContext';
 
 const ShopPage = () => {
+
+    const { user } = UserAuth();
 
     const dispatch = useDispatch();
 
     const [prodctArray, setProdct] = useState([]);
+    const [ActiveUser, setUser] = useState('');
 
     useEffect(() => {
         axios.get('http://localhost:3001/shop/product',{
@@ -29,8 +33,12 @@ const ShopPage = () => {
     },[])
 
     useEffect(() => {
-        dispatch(getCartItems());
-    }, [dispatch])
+        user === null? setUser('') :setUser(user)
+    },[user])
+
+    useEffect(() => {
+        dispatch(getCartItems(ActiveUser));
+    }, [ActiveUser])
 
     return(
         <>
@@ -43,7 +51,6 @@ const ShopPage = () => {
             >
             {
                 prodctArray.map((prodct, i) => (
-                   
                         <div key={i} className="w-10/12 flex flex-col justify-center items-center">
                             <div className="w-5/6 lg:w-3/6 my-2 border border-black rounded-xl">
                                 <Link to="/productpage" state={{ id: prodct._id }}><img src={prodct.images[0].img_url} alt="Product Image" width="500" height="500" className="w-full h-[229px] object-cover object-center rounded-xl" /></Link>   
@@ -54,11 +61,9 @@ const ShopPage = () => {
                                 <p className="my-1 text-lg">{prodct.prix}$</p>
                             </div>
                         </div>
-                    
                 ))}
             </div>
         </>
-
     );
 }
 

@@ -4,15 +4,11 @@ import { motion } from 'framer-motion';
 import WishList from '../Wishlist/wishlist';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useDispatch } from 'react-redux';
-import { showModal, closeModal } from '../../../../store/slice/modalSlice';
 
 const ProfilePage = () => {
 
     // User auth Context
-    const { user } = UserAuth();
-
-    const dispatch = useDispatch();
+    const { user, LogOut } = UserAuth();
    
     const [edit, setEdit] = useState(false);// set editing mode
     const [newName, setName] = useState('');// New username state
@@ -21,22 +17,12 @@ const ProfilePage = () => {
     const [confirm, setConfirm] = useState('');// Confirm the password
     
     // handle the user log out
-    const LogOut = () => {
-
-        localStorage.removeItem(`${user._id}`)
-
-        const oldToken = Cookies.get('fit-user')
-
-        if(oldToken){
-            Cookies.set('fit-user', oldToken, {expires: new Date(0) });
+    const handleLogOut = async() => {
+        try{
+            await LogOut()
+        } catch(err){
+            console.log(err)
         }
-
-        dispatch(showModal("Logging out..."))
-        setTimeout(() => {
-            dispatch(closeModal())
-            window.location.reload();
-        },[3000])
-        
     }
 
     // handle the edit event
@@ -61,7 +47,6 @@ const ProfilePage = () => {
 
     // handle the username change
     const handleUserName = (e) => {
-      
         setName(e.target.value)
     }
 
@@ -75,14 +60,11 @@ const ProfilePage = () => {
         setConfirm(e.target.value)
     }
 
-
     // handle the save of the updated profile
     const saveUpdate = async(e) => {
        e.preventDefault();
         const token = Cookies.get('fit-user')
-
         try{ 
-            
             const res = await axios.put('http://localhost:3001/user/update', {
                 u_id: user._id,
                 u_name: newName,
@@ -97,10 +79,8 @@ const ProfilePage = () => {
             });
             
             if(res){
-                console.log(res.data.msg);
                 setEdit(edit => !edit);
             }
-
         } catch(error){
             console.log(error.response.data);
         }
@@ -181,11 +161,10 @@ const ProfilePage = () => {
                     <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="submit" className="bg-green-500 text-white p-1 w-20 rounded-2xl lg:p-2 lg:text-lg">Save</motion.button>
                     <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="button" onClick={(e) => handleCancel(e)} className="bg-red-500 text-white p-1 w-20 rounded-2xl lg:p-2 lg:text-lg">Cancel</motion.button>
                 </div>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="button" onClick={() => LogOut()} className="hover:text-red-500 text-xl mt-2 lg:my-4">Logout<i className="fa-solid fa-right-from-bracket ml-2"></i></motion.button>
+                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.90 }} type="button" onClick={() => handleLogOut()} className="hover:text-red-500 text-xl mt-2 lg:my-4">Logout<i className="fa-solid fa-right-from-bracket ml-2"></i></motion.button>
             </form>
             <WishList />
         </>
-
     );
 }
 

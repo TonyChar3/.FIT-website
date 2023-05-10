@@ -93,7 +93,6 @@ const Footer = () => {
                     <span className="text-sm text-white lg:text-md">&copy;.FIT all rights reserved</span>
             </div>
         </>
-
     );
 }
 

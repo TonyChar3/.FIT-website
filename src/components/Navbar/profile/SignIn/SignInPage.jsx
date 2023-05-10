@@ -19,7 +19,6 @@ const SignInPage = () => {
     const [passwd, setPasswd] = useState('');// state for the user password
     const [seePasswrd, setSeePasswrd] = useState(false);// state to the see password eye icon
 
-    
     // handle the click of the eye icon
     const handleEyePassword = () => {
         setSeePasswrd(seePasswrd => !seePasswrd)
@@ -39,9 +38,7 @@ const SignInPage = () => {
     const SignIn = async(e) => {
         e.preventDefault();
         try{
-
             await LogIn(email, passwd)
-
         }catch(err){
             dispatch(showModal(err))
             setTimeout(() => {
@@ -88,7 +85,6 @@ const SignInPage = () => {
                 <Link to="/register" className="text-lg my-2 underline">No account?</Link>
             </motion.form>
         </>
-
     );
 }
 

@@ -6,19 +6,15 @@ import { UserAuth } from '../../context/AuthContext';
 import { useSelector } from 'react-redux';
 import AlertModal from '../modal/modal';
 
-
-
 const Navbar = () => {
 
-    // import the current logged in user from Context
-    const { user } = UserAuth();
+    const { user } = UserAuth();// logged in from AuthContext
 
     const cartCounter = useSelector(state => state.cart.amount);
 
     const [navMenu, setNavMenu] = useState(false);// state of the nav menu tabs
     const [activeCart, setCart] = useState(false);// state of the cart drawer
 
-  
     // handle the click of the hamburger icon
     const HandleMenuClick = () => {
         setNavMenu(navMenu => !navMenu)
@@ -34,7 +30,6 @@ const Navbar = () => {
 
     return(
         <>
-            
             <nav className="grid lg:grid-cols-3 grid-cols-3 p-3 sticky z-10 top-0 left-0 w-full border-b-2 border-black bg-white md:p-4">
                 <div className="ml-1 self-center lg:hidden">
                     <i onClick={HandleMenuClick} className={`fa-sharp fa-solid fa-${navMenu? 'xmark' : 'bars'} text-3xl md:text-4xl ${navMenu? 'rotate-180' : ''} duration-300`}></i>
@@ -85,12 +80,9 @@ const Navbar = () => {
                 </div>
                 <AlertModal />
             </nav>
-            
             <CartDrawer activate={activeCart} closing={HandleCartClick} />
-            
             <Outlet />
         </>
-
     );
 }
 

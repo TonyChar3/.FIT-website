@@ -3,13 +3,15 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal, showModal } from '../../../../store/slice/modalSlice';
-import axios from 'axios';
+import { UserAuth } from '../../../../context/AuthContext';
 
 const RegisterPage = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate();// Navigate between route with react router
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();// use cart slice functions
+
+    const { Register } = UserAuth();
 
     // Set the States
     const [ username, setUsername ] = useState('');// The username input value
@@ -35,40 +37,23 @@ const RegisterPage = () => {
     const registerUser = async(e) => {
 
         e.preventDefault();
-
         try{
-            const response = await axios.post('http://localhost:3001/user/register',{
-                username: username,
-                email: email,
-                password: password
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            const registering = await Register( username, email, password)
 
-            if(response.data){
-                
-
-                dispatch(showModal(response.data.message))
-
+            if(registering){
+                dispatch(showModal(registering))
                 setTimeout(() => {
                     dispatch(closeModal())
-                    
                 },[3000])
 
                 navigate('/login')
             }
-
             setEmail('')
             setUsername('')
             setPassword('')
 
-
         }catch(err){
             dispatch(showModal(err))
-            
             setTimeout(() => {
                 dispatch(closeModal())
             },[5000])

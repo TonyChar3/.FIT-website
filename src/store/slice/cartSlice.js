@@ -8,6 +8,7 @@ export const getCartItems = createAsyncThunk('cart/getCartItems', async(userInfo
         const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
         const hash = Cookies.get('fit-hash') || ""
         const userID = userInfo || ""
+
         const response = await axios.post('http://localhost:3001/cart/items',{
             hash: hash,
             userId: userID
@@ -42,7 +43,7 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addItem: (state, action) => {
-            
+
             const existItem = state.cartItems.find(item => item._id === action.payload._id)
 
             if(existItem){
@@ -112,6 +113,13 @@ const cartSlice = createSlice({
                 state.total += Number(items.price * items.qty)
             })
 
+        },
+        reset: (state, action) => {
+            state.cartItems = [];
+            state.amount = 0;
+            state.total = 0;
+            state.isOpen = false;
+            state.isLoading = true;
         }
     },
     extraReducers: (builder) => {
@@ -121,22 +129,28 @@ const cartSlice = createSlice({
         })
         .addCase(getCartItems.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.cartItems = action.payload
+
+            if(action.payload){
+                state.cartItems = action.payload
             
-            if(Array.isArray(action.payload)){
-                state.amount === 0 ? (
-                    action.payload.forEach((item) => {
-                        state.amount += 1
-                        state.total += Number(item.price * item.qty)
-                    })
-                ) : (
-                    state.cartItems.length <= 0 ?
-    
-                    state.amount = 0
-                    :
-                    ''
-                )
+                if(Array.isArray(action.payload)){
+                    state.amount === 0 ? (
+                        action.payload.forEach((item) => {
+                            state.amount += 1
+                            state.total += Number(item.price * item.qty)
+                        })
+                    ) : (
+                        state.cartItems.length <= 0 ?
+        
+                        state.amount = 0
+                        :
+                        ''
+                    )
+                }
+            } else {
+                state.cartItems = []
             }
+
 
         })
         .addCase(getCartItems.rejected, (state) => {
@@ -144,5 +158,5 @@ const cartSlice = createSlice({
         })
     }
 })
-export const { addItem, removeItem, incrementQty, decrementQty, calculateTotals } = cartSlice.actions;
+export const { addItem, removeItem, incrementQty, decrementQty, calculateTotals, reset } = cartSlice.actions;
 export default cartSlice.reducer;

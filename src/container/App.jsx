@@ -18,7 +18,6 @@ import ErrorCheckoutPage from '../components/website pages/Checkout/Error/ErrorC
 import { AuthContextProvider } from '../context/AuthContext';
 import ProtectedRoutes from '../context/protectedRoutes';
 import ProfilePage from '../components/Navbar/profile/User/profilePage';
-import AlertModal from '../components/modal/modal';
 
 
 function App() {
@@ -27,8 +26,6 @@ function App() {
 
   return (
     <>
-      
-
       <AuthContextProvider>
         <Navbar />
         <AnimatePresence mode='wait'>
@@ -53,9 +50,7 @@ function App() {
         <Footer />
       </AuthContextProvider>
     </>
-
-    
-  )
+  );
 }
 
 export default App

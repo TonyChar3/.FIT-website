@@ -5,26 +5,25 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementQty, getCartItems, incrementQty, removeItem } from '../../../../store/slice/cartSlice.js';
 import { UserAuth } from '../../../../context/AuthContext.jsx';
-import axios from 'axios';
 import { showModal, closeModal } from '../../../../store/slice/modalSlice.js';
+import { removeItemFromCart, changeQuantity } from '../../../../utils/cartUtils.js';
 
 const CartDrawer = ({activate, closing}) =>{
-
-    const { user } = UserAuth();
     
-    const dispatch = useDispatch();
+    const { user } = UserAuth();// logged in user from AuthContext
+    
+    const dispatch = useDispatch();// use the cart functions from the cart slice
 
-    const cartItems = useSelector(state => state.cart.cartItems) || []
+    const cartItems = useSelector(state => state.cart.cartItems) || []// get the cart items array or just give an empty array
 
     const [activeDrawer, setDrawer] = useState(false); // state of the drawer
     const [activeBlackScreen, setBlackScreen] = useState(false); // state of the black screen behind the drawer
+    const [activeUser, setUser] = useState('')// state of the current active user cart
     
 
     // handle the click to close the drawer
     const HandleCloseDrawer = () => {
-
         setDrawer(activeDrawer => !activeDrawer)
-
         setTimeout(() => {
             closing(activeDrawer => !activeDrawer)
         },300)
@@ -32,25 +31,13 @@ const CartDrawer = ({activate, closing}) =>{
 
     // handle the minus
     const handleQuantityMinus = async(item) => {
-
         try{
-
             const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
             const hashID = Cookies.get('fit-hash') || user._id
-    
+
             dispatch(decrementQty(item))
             
-            await axios.put('http://localhost:3001/cart/modify-item',{
-                cartID: hashID,
-                prodct_id: item._id,
-                modif_action: 'decrement'
-            },
-            {
-                headers: {
-                    'Content-Type':'application/json',
-                    'Authorization': `${token}`
-                }
-            })
+            await changeQuantity(hashID, item._id, 'decrement', token)
 
         } catch(err){
             console.log(err)
@@ -59,62 +46,39 @@ const CartDrawer = ({activate, closing}) =>{
 
     // handle the plus
     const handleQuantityPlus = async(item) => {
-
         try{
             const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
             const hashID = Cookies.get('fit-hash') || user._id
-    
+
             dispatch(incrementQty(item))
 
-            await axios.put('http://localhost:3001/cart/modify-item',{
-                cartID: hashID, 
-                prodct_id: item._id,
-                modif_action: 'increment'
-            },{
-                headers: {
-                    'Content-Type':'application/json',
-                    'Authorization': `${token}`
-                }
-            });
-
+            await changeQuantity(hashID, item._id, 'increment', token)
         } catch(err){
             console.log(err)
         }
-
     }
 
     // handle the delete item from the cart
     const handleItemDelete = async(item) => {
-
         try{
             const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
             const hashID = Cookies.get('fit-hash') || user._id
-    
             dispatch(removeItem(item))
 
-            const response = await axios.delete('http://localhost:3001/cart/remove-item',{
-                data: {
-                    cartID: hashID,
-                    prodct_id: item._id                   
-                },
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `${token}`                   
-                }
-            })
+            const removal = await removeItemFromCart(hashID, item._id, token)
 
-            if(response){
-                dispatch(showModal(response.data.message))
-
+            if(removal){
+                dispatch(showModal(removal))
                 setTimeout(() => {
                     dispatch(closeModal())
                 },[5000])
             }
-
         } catch(err){
-            console.log(err)
+            dispatch(showModal(err.message))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
         }
-
     }
 
     useEffect(() => {
@@ -125,8 +89,12 @@ const CartDrawer = ({activate, closing}) =>{
     },[activate])
 
     useEffect(() => {
-        dispatch(getCartItems(user));
+        user === null ? setUser('') : setUser(user)
     }, [user])
+
+    useEffect(() => {
+        dispatch(getCartItems(activeUser))
+    },[activeUser])
 
     // ternary to toggle or not the drawer
     let toggleCartDrawer = activeDrawer? 'right-0' : '-right-full';
@@ -182,18 +150,12 @@ const CartDrawer = ({activate, closing}) =>{
                             </div>
                             :
                             ''
-
                         }
                     </div>
-
                 </div>
             </div>
         </>
-
-    );
+    )
 }
 
 export default CartDrawer;
-
-// The object for when the cart is empty
-

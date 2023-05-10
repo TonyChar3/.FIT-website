@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { showModal, closeModal } from '../store/slice/modalSlice.js';
+import { getCartItems } from '../store/slice/cartSlice.js';
 
 const UserContext = createContext();
 
@@ -15,9 +16,7 @@ export const AuthContextProvider = ({ children }) => {
     const token = Cookies.get('fit-user');
     
     const LogIn = async(u_email, u_passwd) => {
-
         try{
-
             const response = await axios.post('http://localhost:3001/user/login',{
                 email: u_email,
                 password: u_passwd
@@ -65,6 +64,45 @@ export const AuthContextProvider = ({ children }) => {
         }
     }
 
+    const LogOut = () => {
+        localStorage.removeItem(`${user._id}`)
+
+        const oldToken = Cookies.get('fit-user')
+
+        if(oldToken){
+            Cookies.set('fit-user', oldToken, {expires: new Date(0) });
+        }
+
+        dispatch(showModal("Logging out..."))
+        setTimeout(() => {
+            dispatch(closeModal())
+        },[3000])
+        
+        window.location.reload();
+    }
+
+    const Register = async(u_username, u_email, u_password) => {
+        try{
+            const response = await axios.post('http://localhost:3001/user/register',{
+                username: u_username,
+                email: u_email,
+                password: u_password
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if(response){
+                return response.data.message
+            }
+
+        } catch(err){
+            console.log("Register error: ", err)
+        }
+    }
+
     useEffect(() => {
         
         axios.get('http://localhost:3001/user/current', {
@@ -91,6 +129,7 @@ export const AuthContextProvider = ({ children }) => {
                 .then(resp => {
                     Cookies.set('fit-customer', resp.data.token, { expires: 1/24, sameSite: 'strict' })
                     Cookies.set('fit-hash', resp.data.hashToken, { expires: 1/24, sameSite: 'strict' })
+                    dispatch(getCartItems())
                 })
                 .catch(err => {
                     console.log(err.message)
@@ -101,7 +140,7 @@ export const AuthContextProvider = ({ children }) => {
     },[token])
 
     return(
-        <UserContext.Provider value={{ user, LogIn }}>
+        <UserContext.Provider value={{ user, LogIn, LogOut, Register }}>
             {children}
         </UserContext.Provider>
     )

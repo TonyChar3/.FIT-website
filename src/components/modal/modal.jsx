@@ -2,8 +2,8 @@ import { useSelector } from 'react-redux';
 
 const AlertModal = () => {
 
-    const modalState = useSelector(store => store.modal.isActive)
-    const alertModal = useSelector(store => store.modal.message)
+    const modalState = useSelector(store => store.modal.isActive)// get the modal state
+    const alertModal = useSelector(store => store.modal.message)// get the message of the modal
 
     return(
         <>
@@ -13,7 +13,6 @@ const AlertModal = () => {
                 </div>
             </div>
         </>
-
     );
 }
 

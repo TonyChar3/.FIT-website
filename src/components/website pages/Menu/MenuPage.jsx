@@ -93,7 +93,6 @@ const MenuPage = () => {
                     </div>
                 </div>
             </motion.div>
-
         </>
     );
 }
