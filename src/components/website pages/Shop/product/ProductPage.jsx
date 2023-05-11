@@ -27,7 +27,7 @@ const ProductPage = () => {
     const [prodct, setProdct] = useState({})// the product 
     const [description, setDescription] = useState(false); // the description chevron state
     const [SecImg, setImg] = useState([]);// the image array 
-    const [Main, setMain] = useState(null);// the main product image
+    const [Main, setMain] = useState('');// the main product image
     const [heart, setHeart] = useState(false);// the wishlist button
     const [stripeUser, setStripeUser] = useState('');// the user for stripe
 
@@ -236,7 +236,6 @@ const ProductPage = () => {
                             }
                         </div>
                     </div>
-
                     <div className="mt-5 mb-[50px] lg:grid lg:grid-cols-2 lg:gap-5 lg:w-5/6 lg:mx-auto lg:mb-[100px]">
                         <div className="lg:w-5/6 lg:justify-self-center">
                             <div className="flex flex-row justify-center items-center p-4 text-lg w-full border-y-2 border-black lg:border-t-0 lg:justify-start">
