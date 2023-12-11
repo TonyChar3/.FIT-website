@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    host: '10.0.0.129'
+    host: '127.0.0.1'
   }
-})
+});
+
+// Home: '10.0.0.78'
+// School: '142.169.16.15'

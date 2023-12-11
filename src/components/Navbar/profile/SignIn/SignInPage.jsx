@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { UserAuth } from '../../../../context/AuthContext';
 import { useDispatch } from 'react-redux';
@@ -13,32 +13,27 @@ const SignInPage = () => {
     const dispatch = useDispatch();
 
     // import Context user, LogIn function
-    const { LogIn, user }= UserAuth();
-
-    const [email, setEmail] = useState('');// state for the user email
-    const [passwd, setPasswd] = useState('');// state for the user password
-    const [seePasswrd, setSeePasswrd] = useState(false);// state to the see password eye icon
-
-    // handle the click of the eye icon
-    const handleEyePassword = () => {
-        setSeePasswrd(seePasswrd => !seePasswrd)
-    }
-
-    // handle the email input value
-    const handleEmail = (e) => {
-        setEmail(e)
-    }
-
-    // handle the password input value
-    const handlePassword = (e) => {
-        setPasswd(e)
-    }
+    const { GoogleLogIn, FacebookLogIn, user }= UserAuth();
 
     // handle the log in
-    const SignIn = async(e) => {
+    const GoogleSignIn = async(e) => {
         e.preventDefault();
         try{
-            await LogIn(email, passwd)
+            await GoogleLogIn();
+        }catch(err){
+            dispatch(showModal(err))
+            setTimeout(() => {
+                dispatch(closeModal())
+            },[5000])
+        }
+    };
+
+     // handle the log in
+    const FacebookSignIn = async(e) => {
+        e.preventDefault();
+        try{
+            // call the facebook login
+            await FacebookLogIn();
         }catch(err){
             dispatch(showModal(err))
             setTimeout(() => {
@@ -49,41 +44,49 @@ const SignInPage = () => {
 
     useEffect(() => {
         if(user){
-            navigate('/')
+            navigate('/profile')
         }
     },[user]);
 
 
     return(
         <>
-            <motion.form 
-                onSubmit={SignIn} 
-                className="flex flex-col w-full h-[54vh] justify-center items-center mt-5 mb-[50px]"
+            <motion.div
+                className="flex flex-col w-full h-[100%] justify-center items-center"
 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0.1 } }}
             >
-
-                <div className="w-full flex flex-row justify-center p-2">
-                    <h2 className="text-3xl lg:text-5xl">Login</h2>
+                <div className="w-full h-auto flex flex-col justify-center items-center">
+                    <div className="w-full text-center flex flex-col justify-center p-2">
+                        <h2 className="text-4xl lg:text-6xl">Connect.</h2>
+                        <h3 className="text-lg">become a official .FIT client</h3>
+                    </div>
+                    <div onClick={GoogleSignIn} className="flex flex-row justify-center items-center bg-black text-white w-[65%] p-4 lg:p-4 rounded-lg lg:w-60 my-4 cursor-pointer active:scale-[0.90] transform-all ease duration-100">
+                        <span className="w-1/2 flex flex-row justify-end items-center"> 
+                            <h3 className="text-2xl">Google</h3>
+                        </span>
+                        <span className="w-1/2 flex flex-row justify-end items-center">
+                            <i className="fa-brands fa-google text-3xl"></i>
+                        </span>
+                    </div>
+                    <div onClick={FacebookSignIn} className="flex flex-row justify-center items-center bg-black text-white w-[65%] p-4 rounded-lg lg:w-60 my-4 cursor-pointer active:scale-[0.90] transform-all ease duration-100">
+                        <span className="w-1/2 flex flex-row justify-end items-center"> 
+                            <h3 className="text-2xl">Facebook</h3>
+                        </span>
+                        <span className="w-1/2 flex flex-row justify-end items-center">
+                            <i className="fa-brands fa-facebook text-3xl"></i>
+                        </span>
+                    </div>
                 </div>
-
-                <div className="flex flex-row justify-center w-80 p-1 my-4 lg:my-6">
-                    <motion.input whileFocus={{ scale: 1.1 }} whileHover={{ scale: 1.1 }} onChange={(e) => handleEmail(e.target.value)} type="email" className="border-[1px] border-black rounded-lg p-1 w-60 outline-none lg:w-[95%] lg:p-2" placeholder="Your email" />
+                <div className="lg:w-[30%] my-4">
+                    <p className="text-center text-lg lg:text-xl">
+                        <span className="font-bold">.FIT</span> users have access to our <span className="underline">weekly newsletter</span>, <span className="underline">monthly deals</span> and much much more!
+                        You will also have access to a wishlist option and NEVER see your cart disappear.
+                    </p>
                 </div>
-
-                <div className="flex flex-row justify-center items-center w-80 p-1 mt-2 lg:mt-4">
-                    <motion.input whileFocus={{ scale: 1.1 }} whileHover={{ scale: 1.1 }} onChange={(e) => handlePassword(e.target.value)} type={`${seePasswrd? 'text' : 'password'}`} className="border-[1px] border-black rounded-lg p-1 w-60 outline-none lg:w-[95%] lg:p-2" placeholder="Password" />
-                </div>
-                <div className="flex flex-row w-80 justify-center p-1">
-                    <span><motion.i onClick={handleEyePassword} whileTap={{ scale: 0.90 }} className={`fa-light fa-eye${seePasswrd? '' : '-slash'} text-xl lg:text-lg`}></motion.i></span>
-                </div>
-
-                <motion.button type="submit" whileTap={{ scale: 0.70 }} className="bg-black text-white w-40 p-1 rounded-lg text-lg my-2 lg:w-60 lg:text-xl lg:my-4">Submit</motion.button>
-
-                <Link to="/register" className="text-lg my-2 underline">No account?</Link>
-            </motion.form>
+            </motion.div>
         </>
     );
 }

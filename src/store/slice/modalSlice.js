@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+/**
+ * Redux modal slice functions
+ */
+
 const initialState = {
     isActive: false,
     message: ""
@@ -20,7 +24,7 @@ const modalSlice = createSlice({
             state.message = ""
         }
     }
-})
+});
 
 export const { showModal, closeModal} = modalSlice.actions;
 export default modalSlice.reducer;

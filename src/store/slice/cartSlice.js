@@ -1,35 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
+/**
+ * Redux Cart Slice functions
+ */
 
-export const getCartItems = createAsyncThunk('cart/getCartItems', async(userInfo) => {
+/**
+ * fetch the user cart items
+ */
+export const getCartItems = createAsyncThunk('cart/getCartItems', async() => {
     try{
-        const token = Cookies.get('fit-user') || Cookies.get('fit-customer')
-        const hash = Cookies.get('fit-hash') || ""
-        const userID = userInfo || ""
-
-        const response = await axios.post('http://localhost:3001/cart/items',{
-            hash: hash,
-            userId: userID
-        },
+        const response = await axios.post('https://fit-shop-api.onrender.com/cart/cart-items',{},
         {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`
-            }
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
         });
-
-        if(response){
-            return response.data
-        } else {
-            console.log(error.message)
-        }
+        return response.data.products
     }catch(err){
         console.log(err)
     }
 });
 
+// default intial state of the cart
 const initialState = {
     cartItems: [],
     amount: 0,
@@ -37,15 +31,14 @@ const initialState = {
     isOpen: false,
     isLoading: true
 }
-
+// create the cart slice
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+        // add the item to the cart
         addItem: (state, action) => {
-
             const existItem = state.cartItems.find(item => item._id === action.payload._id)
-
             if(existItem){
                 existItem.qty += 1
             } else {
@@ -60,8 +53,8 @@ const cartSlice = createSlice({
                 state.cartItems.push(newItem)
                 state.isOpen = true;
             }
-
         },
+        // remove an item
         removeItem: (state, action) => {
             state.cartItems = state.cartItems.filter((item) => item._id !== action.payload._id)
 
@@ -78,6 +71,7 @@ const cartSlice = createSlice({
                 })
             }
         },
+        // increase the quantity of an item +
         incrementQty: (state, action) => {
             state.cartItems.find((item) => {
                 if(item._id === action.payload._id){
@@ -86,6 +80,7 @@ const cartSlice = createSlice({
                 }
             })
         },
+        // decrease the quantity of an item -
         decrementQty: (state, action) => {
             state.cartItems.find((item) => {
                 if(item._id === action.payload._id){
@@ -102,6 +97,7 @@ const cartSlice = createSlice({
                 } 
             })
         },
+        // calculate the total price of the cart
         calculateTotals: (state) => {
             
             state.amount = 0;
@@ -114,6 +110,7 @@ const cartSlice = createSlice({
             })
 
         },
+        // reset the cart values
         reset: (state, action) => {
             state.cartItems = [];
             state.amount = 0;
@@ -150,13 +147,12 @@ const cartSlice = createSlice({
             } else {
                 state.cartItems = []
             }
-
-
         })
         .addCase(getCartItems.rejected, (state) => {
             state.isLoading = true;
         })
     }
 })
+
 export const { addItem, removeItem, incrementQty, decrementQty, calculateTotals, reset } = cartSlice.actions;
 export default cartSlice.reducer;

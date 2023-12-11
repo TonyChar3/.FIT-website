@@ -9,13 +9,17 @@
     padding: 0;
 }
 
-body{
-    min-height: 100vh;
+body, html {
+    height: 100%;
     width: 100%;
-    overflow-x: hidden;
+    position: fixed;
 }
-
-#root{
-    min-height: 100%;
+  
+#root {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     background-color: white;
 }
+  

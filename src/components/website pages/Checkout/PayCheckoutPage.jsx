@@ -1,29 +1,32 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartItems } from '../../../store/slice/cartSlice';
 import { showModal, closeModal } from '../../../store/slice/modalSlice';
-import Cookies from 'js-cookie';
-import { UserAuth } from '../../../context/AuthContext';
 import { checkOutStripe } from '../../../utils/checkoutUtils';
 
 const PayCheckoutPage = () => {
 
     const dispatch = useDispatch();// use the cart redux stores functions
 
-    const { user } = UserAuth();// user from AuthContext
-
-    const cartItems = useSelector(store => store.cart.cartItems)
-    const cartTotal = useSelector(store => store.cart.total)
-    
-    const [ stripeUser, setStripeUser] = useState('');
+    const cartItems = useSelector(store => store.cart.cartItems);
+    const cartTotal = useSelector(store => store.cart.total);
    
     // handle the stripe checkout session
     const handleCheckout = async() => {
         try{
-            const checkout = await checkOutStripe(cartItems, stripeUser)
-
+            let items_array = [];
+            // get the info needed
+            cartItems.forEach(item => {
+                items_array.push({
+                    _id:item._id,
+                    stripe_ID: item.stripe_ID,
+                    qty: item.qty
+                })
+            });
+            // checkout
+            const checkout = await checkOutStripe(items_array)
             if(checkout){
                 window.location.href = checkout
             }
@@ -36,22 +39,13 @@ const PayCheckoutPage = () => {
     }
 
     useEffect(() => {
-        if(user === null){
-            const hash = Cookies.get('fit-hash');
-            setStripeUser(hash)
-        }else {
-            setStripeUser(user._id)
-        }
-    },[user])
-
-    useEffect(() => {
         dispatch(getCartItems())
     },[dispatch])
  
     return(
         <>
             <div 
-                className="flex flex-col justify-center items-center mb-[50px] h-[55vh] lg:h-[80vh]"
+                className="flex flex-col justify-center items-center mb-[50px] h-full"
                 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

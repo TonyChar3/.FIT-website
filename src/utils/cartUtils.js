@@ -1,60 +1,64 @@
 import axios from 'axios';
 
-const addItemToCart = async(cart_id, item_id, token) => {
+/**
+ * Functions to handle the cart actions request
+ */
+
+/**
+ * Add a new item to the cart
+ */
+const addItemToCart = async(item_id) => {
     try{
-        const response = await axios.put('http://localhost:3001/cart/add-to-cart',{
-            cartID: cart_id,
+        const response = await axios.put('https://fit-shop-api.onrender.com/cart/add-to-cart',{
             prodct_id: item_id,
             prodct_qty: 1
         },
         {
             headers: {
-                'Content-Type':'application/json',
-                'Authorization': `${token}`
-            }
+                'Content-Type':'application/json'
+            },
+            withCredentials: true
         });
-
-        if(response){
-            return response.data.message
-        }
+        return response.data.message
     } catch(err){
         console.log('Cart utils function error: ',err);
     }
 }
 
-const removeItemFromCart = async(cart_id, item_id, token) => {
+/**
+ * Remove the item from the cart
+ */
+const removeItemFromCart = async(item_id) => {
     try{
-        const response = await axios.delete('http://localhost:3001/cart/remove-item',{
+        const response = await axios.delete('https://fit-shop-api.onrender.com/cart/remove-item',{
             data: {
-                cartID: cart_id,
                 prodct_id: item_id                   
             },
             headers:{
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`                   
-            }
+                'Content-Type': 'application/json'                 
+            },
+            withCredentials: true
         });
-
-        if(response){
-            return response.data.message
-        }
+        return response.data.message
     } catch(err){
         console.log("remove from cart error: ", err)
     }
 }
 
-const changeQuantity = async(cart_id, item_id, action, token) => {
+/**
+ * Change the quantity of the cart item
+ */
+const changeQuantity = async(item_id, action) => {
     try{
-        await axios.put('http://localhost:3001/cart/modify-item',{
-            cartID: cart_id,
+        await axios.put('https://fit-shop-api.onrender.com/cart/modify-item',{
             prodct_id: item_id,
             modif_action: action
         },
         {
             headers: {
-                'Content-Type':'application/json',
-                'Authorization': `${token}`
-            }
+                'Content-Type':'application/json'
+            },
+            withCredentials: true
         });
     } catch(err){
         console.log("quantity increment error: ", err)
