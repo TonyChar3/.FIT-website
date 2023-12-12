@@ -9,7 +9,7 @@ import axios from 'axios';
  */
 const addItemToCart = async(item_id) => {
     try{
-        const response = await axios.put('https://fit-shop-api.onrender.com/cart/add-to-cart',{
+        const response = await axios.put('https://server-fit-shop.tony-char3.com/cart/add-to-cart',{
             prodct_id: item_id,
             prodct_qty: 1
         },
@@ -30,7 +30,7 @@ const addItemToCart = async(item_id) => {
  */
 const removeItemFromCart = async(item_id) => {
     try{
-        const response = await axios.delete('https://fit-shop-api.onrender.com/cart/remove-item',{
+        const response = await axios.delete('https://server-fit-shop.tony-char3.com/cart/remove-item',{
             data: {
                 prodct_id: item_id                   
             },
@@ -50,7 +50,7 @@ const removeItemFromCart = async(item_id) => {
  */
 const changeQuantity = async(item_id, action) => {
     try{
-        await axios.put('https://fit-shop-api.onrender.com/cart/modify-item',{
+        await axios.put('https://server-fit-shop.tony-char3.com/cart/modify-item',{
             prodct_id: item_id,
             modif_action: action
         },

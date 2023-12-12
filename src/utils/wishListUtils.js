@@ -10,7 +10,7 @@ import axios from 'axios';
 const addToWishList = async(prodct_id) => {
     try{
         // send a post request to the route
-        const send = await axios.post('https://fit-shop-api.onrender.com/wishlist/addWishlist',{
+        const send = await axios.post('https://server-fit-shop.tony-char3.com/wishlist/addWishlist',{
             prodct_id: prodct_id
         },{
             headers: {
@@ -30,7 +30,7 @@ const addToWishList = async(prodct_id) => {
 const removeFromWishList = async(prodct_id) => {
     try{
         // send a post request to the route
-        const send = await axios.delete('https://fit-shop-api.onrender.com/wishlist/removeWishlist', {
+        const send = await axios.delete('https://server-fit-shop.tony-char3.com/wishlist/removeWishlist', {
             data: { prodct_id: prodct_id },
             headers: {
                 'Content-Type': 'application/json'

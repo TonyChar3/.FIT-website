@@ -6,7 +6,7 @@ import axios from 'axios';
 const checkOutStripe = async(items_array, stripe_user) => {
     try{
         const stripeKey = import.meta.env.VITE_SECRET_STRIPE
-        const response = await axios.post('https://fit-shop-api.onrender.com/stripe/create-payment-intent',{
+        const response = await axios.post('https://server-fit-shop.tony-char3.com/stripe/create-payment-intent',{
             items: items_array,
             userID: stripe_user
         },
