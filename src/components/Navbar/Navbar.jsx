@@ -85,23 +85,25 @@ const Navbar = () => {
             <div className={`${open_nav_menu? 'bg-black absolute h-full w-full bg-opacity-25 transform-all ease duration-300 lg:hidden' : 'hidden' }`}></div>
             {/* Route Outlet */}
             <Outlet />
-            {/* Cookie consent pop-up */}
-            <CookieConsent
-                location='bottom'
-                enableDeclineButton
-                buttonText="Accept"
-                buttonStyle={{ backgroundColor: 'white', borderRadius: '15px' }}
-                declineButtonStyle={{ borderRadius: '15px' }}
-                declineButtonText="Decline"
-                style={{ backgroundColor: 'black', border: '2px solid white' }}
-                onAccept={() => setCookieConsent(true)}
-                onDecline={() => setCookieConsent(false)}
-            >
-            This website uses cookies to enhance the user experience.
-            Read our <Link to="/policy" className="underline">privacy policy</Link>
-            </CookieConsent>             
         </>
     );
 }
 
 export default Navbar;
+
+
+            // {/* Cookie consent pop-up */}
+            // {/* <CookieConsent
+            //     location='bottom'
+            //     enableDeclineButton
+            //     buttonText="Accept"
+            //     buttonStyle={{ backgroundColor: 'white', borderRadius: '15px' }}
+            //     declineButtonStyle={{ borderRadius: '15px' }}
+            //     declineButtonText="Decline"
+            //     style={{ backgroundColor: 'black', border: '2px solid white' }}
+            //     onAccept={() => setCookieConsent(true)}
+            //     onDecline={() => setCookieConsent(false)}
+            // >
+            // This website uses cookies to enhance the user experience.
+            // Read our <Link to="/policy" className="underline">privacy policy</Link>
+            // </CookieConsent>              */}
