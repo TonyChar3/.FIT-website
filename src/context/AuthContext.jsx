@@ -82,13 +82,15 @@ export const AuthContextProvider = ({ children }) => {
                 },
                 withCredentials: true
             });
+            console.log(response)
             // set the array
-            setProductsArray(response.data)
+            // setProductsArray(response.data)
         } catch(err){
-            dispatch(showModal(err))
-            setTimeout(() => {
-                dispatch(closeModal())
-            },[5000])
+            console.log(err)
+            // dispatch(showModal(err))
+            // setTimeout(() => {
+            //     dispatch(closeModal())
+            // },[5000])
         }
     }
 
@@ -127,7 +129,7 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     const GetFitUserInfo = () => {
-        axios.get('https://fit-shop-api.onrender.com/user/current', {
+        axios.get('https://server-fit-shop.tony-char3.com/user/current', {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -140,14 +142,17 @@ export const AuthContextProvider = ({ children }) => {
         .catch(err => {
             setUser(null)
             if(cookie_consent !== false){
-                axios.get('https://fit-shop-api.onrender.com/fit-user',{
+                axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     withCredentials: true
                 })
                 .then(resp => {
-                    FetchProducts();
+                    if(resp){
+                        console.log(resp)
+                        FetchProducts();
+                    }
                 })
                 .catch(err => {
                     dispatch(showModal(err.message))
