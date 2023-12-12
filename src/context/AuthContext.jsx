@@ -76,7 +76,7 @@ export const AuthContextProvider = ({ children }) => {
     const FetchProducts = async() => {
         try{
             // fetch all store products
-            const response = await axios.get('https://fit-shop-api.onrender.com/shop/product',{
+            const response = await axios.get('https://server-fit-shop.tony-char3.com/shop/product',{
                 headers:{
                     'Content-Type':'application/json'
                 },
