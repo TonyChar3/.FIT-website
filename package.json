@@ -1,6 +1,6 @@
 {
-  "homepage":"./",
   "name": "fit-website",
+  "homepage":"https://fit-website-zeta.vercel.app/fit-website/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
