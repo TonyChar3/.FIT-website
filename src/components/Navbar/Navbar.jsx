@@ -4,7 +4,7 @@ import CartDrawer from './Cart/cart_drawer/CartDrawer';
 import { UserAuth } from '../../context/AuthContext';
 import { useSelector } from 'react-redux';
 import AlertModal from '../modal/modal';
-import CookieConsent from 'react-cookie-consent';
+// import CookieConsent from 'react-cookie-consent';
 
 const Navbar = () => {
 
