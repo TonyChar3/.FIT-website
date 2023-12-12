@@ -19,7 +19,7 @@ export const AuthContextProvider = ({ children }) => {
     const GoogleLogIn = async() => {
         try{
             // clear the httpOnly customer hash + jwt token
-            const response = await axios.get('https://fit-shop-api.onrender.com/user/clear-session',{
+            const response = await axios.get('https://server-fit-shop.tony-char3.com/user/clear-session',{
                 headers:{
                     'Content-Type':'application/json'
                 },
@@ -27,7 +27,7 @@ export const AuthContextProvider = ({ children }) => {
             });
             if(response){
                 // redirect to google login
-                window.location.href = 'https://fit-shop-api.onrender.com/user/google-login'
+                window.location.href = 'https://server-fit-shop.tony-char3.com/user/google-login'
             }
         }catch(err){
             dispatch(showModal(err))
@@ -40,7 +40,7 @@ export const AuthContextProvider = ({ children }) => {
     const FacebookLogIn = async() => {
         try{
             // clear the httpOnly customer hash + jwt token
-            const response = await axios.get('https://fit-shop-api.onrender.com/user/clear-session',{
+            const response = await axios.get('https://server-fit-shop.tony-char3.com/user/clear-session',{
                 headers:{
                     'Content-Type':'application/json'
                 },
@@ -48,7 +48,7 @@ export const AuthContextProvider = ({ children }) => {
             });
             if(response){
                 // redirect to google login
-                window.location.href = 'https://fit-shop-api.onrender.com/user/facebook-login'
+                window.location.href = 'https://server-fit-shop.tony-char3.com/user/facebook-login'
             }
         }catch(err){
             dispatch(showModal(err))
@@ -60,7 +60,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const LogOut = async() => {
         // make a request to logout
-        await axios.post('https://fit-shop-api.onrender.com/user/logout',{},{
+        await axios.post('https://server-fit-shop.tony-char3.com/user/logout',{},{
             headers: {
                 'Content-Type':'application/json'
             },
@@ -82,9 +82,8 @@ export const AuthContextProvider = ({ children }) => {
                 },
                 withCredentials: true
             });
-            console.log(response)
             // set the array
-            // setProductsArray(response.data)
+            setProductsArray(response.data)
         } catch(err){
             console.log(err)
             // dispatch(showModal(err))
@@ -97,7 +96,7 @@ export const AuthContextProvider = ({ children }) => {
     const ClearCookies = async() => {
         try{
             // clear the httpOnly customer hash + jwt token
-            await axios.get('https://fit-shop-api.onrender.com/user/clear-session',{
+            await axios.get('https://server-fit-shop.tony-char3.com/user/clear-session',{
                 headers:{
                     'Content-Type':'application/json'
                 },
@@ -113,7 +112,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const fetchWishList = async() => {
         try{
-            const response = await axios.get('https://fit-shop-api.onrender.com/wishlist/wishlist', {
+            const response = await axios.get('https://server-fit-shop.tony-char3.com/wishlist/wishlist', {
                 headers:{
                     'Content-Type': 'application/json'
                 },
@@ -150,7 +149,6 @@ export const AuthContextProvider = ({ children }) => {
                 })
                 .then(resp => {
                     if(resp){
-                        console.log(resp)
                         FetchProducts();
                     }
                 })

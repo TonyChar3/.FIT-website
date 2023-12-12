@@ -8,7 +8,7 @@ const ShopPage = memo(() => {
     return(
         <>
             <div 
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 lg:w-3/4 lg:h-[100%] lg:mx-auto gap-6 justify-items-center items-center p-6"
+                className="min-h-[100%] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 lg:w-3/4 lg:mx-auto gap-6 justify-items-center items-center p-6"
                     
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -20,8 +20,11 @@ const ShopPage = memo(() => {
                         <ProductCard key={i} prodct={prodct} />
                     ))
                     : 
-                    <>
-                    </>
+                    <div className="relative my-auto mx-auto text-center">
+                        <i className="fa-regular fa-triangle-exclamation text-8xl"></i>
+                        <p className="text-2xl text-black my-6">Network ERROR</p>
+                        <span>Refresh the page or contact support :(</span>
+                    </div>
                 }   
             </div>
         </>
