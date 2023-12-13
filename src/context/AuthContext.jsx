@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { showModal, closeModal } from '../store/slice/modalSlice.js';
 import Cookies from 'js-cookie';
+import { getCartItems } from '../store/slice/cartSlice.js';
 
 const UserContext = createContext();
 
@@ -137,6 +138,7 @@ export const AuthContextProvider = ({ children }) => {
             });
             if(fetch_auth){
                 setUser(fetch_auth.data)
+                dispatch(getCartItems());
             }
         } catch(err){
             setUser(null);
@@ -148,6 +150,7 @@ export const AuthContextProvider = ({ children }) => {
                         },
                         withCredentials: true
                     });
+                    dispatch(getCartItems());
                 } catch(err){
                     dispatch(showModal(err.message))
                     setTimeout(() => {
