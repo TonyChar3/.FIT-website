@@ -169,7 +169,7 @@ export const AuthContextProvider = ({ children }) => {
         // get the consent of cookies from the storage
         const cookie_state_consent = Cookies.get('CookieConsent');
         setCookieConsent(cookie_state_consent);
-    },[]);
+    },[cookie_consent,user]);
 
     useEffect(() => {
         if(cookie_consent === false){
