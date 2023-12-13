@@ -194,7 +194,8 @@ export const AuthContextProvider = ({ children }) => {
             cookie_consent, 
             setCookieConsent,
             wishlist_array,
-            setWishList
+            setWishList,
+            GetFitUserInfo
             }}>
             {children}
         </UserContext.Provider>

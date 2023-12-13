@@ -5,6 +5,21 @@ import axios from 'axios';
  * Redux Cart Slice functions
  */
 
+export const getUserInfo = createAsyncThunk('cart/UserInfo', async() => {
+    try{
+        console.log('fetching from redux anonym user data...')
+        await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        console.log('anonym redux user data set!')
+        await FetchProducts();
+    } catch(err){
+        console.log('redus err: ', err)
+    }
+})
 /**
  * fetch the user cart items
  */
