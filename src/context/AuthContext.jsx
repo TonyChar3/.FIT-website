@@ -174,9 +174,8 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         if(cookie_consent === false){
             ClearCookies();
-        } else if(cookie_consent === true){
-            GetFitUserInfo();
         }
+        GetFitUserInfo();
     },[cookie_consent])
 
     useEffect(() => {
