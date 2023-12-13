@@ -159,7 +159,7 @@ export const AuthContextProvider = ({ children }) => {
                 }
             }
         }
-        // FetchProducts();
+        await FetchProducts();
     }
 
     useEffect(() => {
