@@ -165,9 +165,9 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         // fetch the user data 
         GetFitUserInfo();
-        // // get the consent of cookies from the storage
-        // const cookie_state_consent = Cookies.get('CookieConsent');
-        // setCookieConsent(cookie_state_consent);
+        // get the consent of cookies from the storage
+        const cookie_state_consent = Cookies.get('CookieConsent');
+        setCookieConsent(cookie_state_consent);
     },[]);
 
     useEffect(() => {
