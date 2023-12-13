@@ -127,77 +127,47 @@ export const AuthContextProvider = ({ children }) => {
         }
     }
 
-    const GetFitUserInfo = () => {
-        axios.get('https://server-fit-shop.tony-char3.com/user/current', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true
-        })
-        .then(resp => {
-            setUser(resp.data)
-            FetchProducts();
-        })
-        .catch(err => {
-            setUser(null)
-            if(cookie_consent !== false){
-                axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    withCredentials: true
-                })
-                .then(resp => {
-                    if(resp){
+    const GetFitUserInfo = async() => {
+        try{
+            const fetch_auth = await axios.get('https://server-fit-shop.tony-char3.com/user/current', {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            });
+            if(fetch_auth){
+                setUser(fetch_auth.data)
+                FetchProducts();
+            }
+        } catch(err){
+            try{
+                setUser(null);
+                if(cookie_consent !== false){
+                    const fetch_user = await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        withCredentials: true
+                    });
+                    if(fetch_user){
                         FetchProducts();
                     }
-                })
-                .catch(err => {
-                    dispatch(showModal(err.message))
-                    setTimeout(() => {
-                        dispatch(closeModal())
-                    },[5000])
-                })
+                }
+            } catch(err){
+                dispatch(showModal(err.message))
+                setTimeout(() => {
+                    dispatch(closeModal())
+                },[5000])
             }
-        })
+        }
     }
 
     useEffect(() => {
         // get the consent of cookies from the storage
         const cookie_state_consent = Cookies.get('CookieConsent');
         setCookieConsent(cookie_state_consent);
-        axios.get('https://server-fit-shop.tony-char3.com/user/current', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            withCredentials: true
-        })
-        .then(resp => {
-            setUser(resp.data)
-            FetchProducts();
-        })
-        .catch(err => {
-            setUser(null)
-            if(cookie_consent !== false){
-                axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    withCredentials: true
-                })
-                .then(resp => {
-                    if(resp){
-                        FetchProducts();
-                    }
-                })
-                .catch(err => {
-                    dispatch(showModal(err.message))
-                    setTimeout(() => {
-                        dispatch(closeModal())
-                    },[5000])
-                })
-            }
-        })
+        // fetch the user data 
+        GetFitUserInfo();
     },[])
 
     useEffect(() => {
