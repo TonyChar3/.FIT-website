@@ -141,10 +141,10 @@ export const AuthContextProvider = ({ children }) => {
             }
         } catch(err){
             setUser(null);
-            try{
-                if(cookie_consent !== false){
+            if(cookie_consent !== false){
+                try{
                     console.log('fetching anonym user data...')
-                    const fetch_user = await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
+                    await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -152,12 +152,12 @@ export const AuthContextProvider = ({ children }) => {
                     });
                     console.log('anonym user data set!')
                     await FetchProducts();
+                } catch(err){
+                    dispatch(showModal(err.message))
+                    setTimeout(() => {
+                        dispatch(closeModal())
+                    },[5000])
                 }
-            } catch(err){
-                dispatch(showModal(err.message))
-                setTimeout(() => {
-                    dispatch(closeModal())
-                },[5000])
             }
         }
     }
