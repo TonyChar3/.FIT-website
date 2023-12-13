@@ -150,10 +150,8 @@ export const AuthContextProvider = ({ children }) => {
                         },
                         withCredentials: true
                     });
-                    if(fetch_user){
-                        console.log('anonym user data set!')
-                        FetchProducts();
-                    }
+                    console.log('anonym user data set!')
+                    FetchProducts();
                 }
             } catch(err){
                 dispatch(showModal(err.message))
