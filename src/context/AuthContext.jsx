@@ -140,8 +140,8 @@ export const AuthContextProvider = ({ children }) => {
                 FetchProducts();
             }
         } catch(err){
+            setUser(null);
             try{
-                setUser(null);
                 if(cookie_consent !== false){
                     const fetch_user = await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
                         headers: {
