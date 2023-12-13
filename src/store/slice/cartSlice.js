@@ -7,20 +7,21 @@ import axios from 'axios';
 /**
  * fetch the user cart items
  */
-// export const getCartItems = createAsyncThunk('cart/getCartItems', async() => {
-//     try{
-//         const response = await axios.post('https://server-fit-shop.tony-char3.com/cart/cart-items',{},
-//         {
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             withCredentials: true
-//         });
-//         return response.data.products
-//     }catch(err){
-//         console.log(err)
-//     }
-// });
+export const getCartItems = createAsyncThunk('cart/getCartItems', async() => {
+    try{
+        // const response = await axios.post('https://server-fit-shop.tony-char3.com/cart/cart-items',{},
+        // {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     withCredentials: true
+        // });
+        //response.data.products
+        return true
+    }catch(err){
+        console.log(err)
+    }
+});
 
 // default intial state of the cart
 const initialState = {
