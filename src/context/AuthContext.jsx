@@ -166,8 +166,38 @@ export const AuthContextProvider = ({ children }) => {
         // get the consent of cookies from the storage
         const cookie_state_consent = Cookies.get('CookieConsent');
         setCookieConsent(cookie_state_consent);
-        // get the user info
-        GetFitUserInfo();
+        axios.get('https://server-fit-shop.tony-char3.com/user/current', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        })
+        .then(resp => {
+            setUser(resp.data)
+            FetchProducts();
+        })
+        .catch(err => {
+            setUser(null)
+            if(cookie_consent !== false){
+                axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                })
+                .then(resp => {
+                    if(resp){
+                        FetchProducts();
+                    }
+                })
+                .catch(err => {
+                    dispatch(showModal(err.message))
+                    setTimeout(() => {
+                        dispatch(closeModal())
+                    },[5000])
+                })
+            }
+        })
     },[])
 
     useEffect(() => {
