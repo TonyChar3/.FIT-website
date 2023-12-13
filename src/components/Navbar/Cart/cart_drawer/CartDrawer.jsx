@@ -67,7 +67,8 @@ const CartDrawer = ({activate, closing}) =>{
     },[activate])
 
     useEffect(() => {
-        dispatch(getCartItems());
+
+        // dispatch(getCartItems());
     },[user])
 
     return(
