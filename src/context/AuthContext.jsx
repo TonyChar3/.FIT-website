@@ -168,7 +168,7 @@ export const AuthContextProvider = ({ children }) => {
         setCookieConsent(cookie_state_consent);
         // fetch the user data 
         GetFitUserInfo();
-    },[])
+    },[user, cookie_consent]);
 
     useEffect(() => {
         if(cookie_consent === false){
