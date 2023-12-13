@@ -137,7 +137,7 @@ export const AuthContextProvider = ({ children }) => {
             });
             if(fetch_auth){
                 setUser(fetch_auth.data)
-                FetchProducts();
+                await FetchProducts();
             }
         } catch(err){
             setUser(null);
@@ -151,7 +151,7 @@ export const AuthContextProvider = ({ children }) => {
                         withCredentials: true
                     });
                     console.log('anonym user data set!')
-                    FetchProducts();
+                    await FetchProducts();
                 }
             } catch(err){
                 dispatch(showModal(err.message))
