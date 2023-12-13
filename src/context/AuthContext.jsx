@@ -132,12 +132,13 @@ export const AuthContextProvider = ({ children }) => {
         if(cookie_consent !== false){
             try{
                 console.log('fetching anonym user data...')
-                await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
+                const request = await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     withCredentials: true
                 });
+                console.log(request);
                 console.log('anonym user data set!')
                 await FetchProducts();
             } catch(err){
