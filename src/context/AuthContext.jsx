@@ -156,6 +156,7 @@ export const AuthContextProvider = ({ children }) => {
                 }
             }
         }
+        FetchProducts();
     }
 
     useEffect(() => {
@@ -164,7 +165,6 @@ export const AuthContextProvider = ({ children }) => {
         // get the consent of cookies from the storage
         const cookie_state_consent = Cookies.get('CookieConsent');
         setCookieConsent(cookie_state_consent);
-        FetchProducts();
     },[]);
 
     useEffect(() => {
