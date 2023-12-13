@@ -163,12 +163,12 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        // fetch the user data 
+        GetFitUserInfo();
         // get the consent of cookies from the storage
         const cookie_state_consent = Cookies.get('CookieConsent');
         setCookieConsent(cookie_state_consent);
-        // fetch the user data 
-        GetFitUserInfo();
-    },[user, cookie_consent]);
+    },[]);
 
     useEffect(() => {
         if(cookie_consent === false){
