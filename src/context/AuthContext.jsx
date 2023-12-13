@@ -175,10 +175,10 @@ export const AuthContextProvider = ({ children }) => {
         if(cookie_consent === false){
             ClearCookies();
         }
-        GetFitUserInfo();
     },[cookie_consent])
 
     useEffect(() => {
+        GetFitUserInfo();
         if(user !== null){
             fetchWishList();
         }
