@@ -128,58 +128,38 @@ export const AuthContextProvider = ({ children }) => {
     }
 
     const GetFitUserInfo = async() => {
-        setUser(null);
-        if(cookie_consent !== false){
-            try{
-                console.log('fetching anonym user data...')
-                const request = await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    withCredentials: true
-                });
-                console.log(request);
-                console.log('anonym user data set!')
+        try{
+            const fetch_auth = await axios.get('https://server-fit-shop.tony-char3.com/user/current', {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            });
+            if(fetch_auth){
+                setUser(fetch_auth.data)
                 await FetchProducts();
-            } catch(err){
-                dispatch(showModal(err.message))
-                setTimeout(() => {
-                    dispatch(closeModal())
-                },[5000])
+            }
+        } catch(err){
+            setUser(null);
+            if(cookie_consent !== false){
+                try{
+                    console.log('fetching anonym user data...')
+                    await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        withCredentials: true
+                    });
+                    console.log('anonym user data set!')
+                    await FetchProducts();
+                } catch(err){
+                    dispatch(showModal(err.message))
+                    setTimeout(() => {
+                        dispatch(closeModal())
+                    },[5000])
+                }
             }
         }
-        // try{
-        //     const fetch_auth = await axios.get('https://server-fit-shop.tony-char3.com/user/current', {
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         withCredentials: true
-        //     });
-        //     if(fetch_auth){
-        //         setUser(fetch_auth.data)
-        //         await FetchProducts();
-        //     }
-        // } catch(err){
-        //     setUser(null);
-        //     if(cookie_consent !== false){
-        //         try{
-        //             console.log('fetching anonym user data...')
-        //             await axios.get('https://server-fit-shop.tony-char3.com/fit-user',{
-        //                 headers: {
-        //                     'Content-Type': 'application/json'
-        //                 },
-        //                 withCredentials: true
-        //             });
-        //             console.log('anonym user data set!')
-        //             await FetchProducts();
-        //         } catch(err){
-        //             dispatch(showModal(err.message))
-        //             setTimeout(() => {
-        //                 dispatch(closeModal())
-        //             },[5000])
-        //         }
-        //     }
-        // }
     }
 
     useEffect(() => {
