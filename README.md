@@ -10,4 +10,6 @@ User can login with Google or Facebook. This was made possible using Passport JS
 
 This shop was made for personnal purposes ONLY!
 
+Visit at: https://fit-shop.tony-char3.com
+
 
