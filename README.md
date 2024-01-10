@@ -12,4 +12,10 @@ This shop was made for personnal purposes ONLY!
 
 Visit at: https://fit-shop.tony-char3.com
 
+Buy something in test mode with this test card:
+-
+card: 4242 4242 4242 4242
+security: 222
+expiry: 09\26
+
 
