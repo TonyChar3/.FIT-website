@@ -25,7 +25,7 @@ const WishList = () => {
             ></i>
           </div>
         </div>
-        {wishlist_array.length ? (
+        {wishlist_array.length !== null ? (
           <div
             className={`
                       grid grid-cols-1 gap-4 p-2 w-full
