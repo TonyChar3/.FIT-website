@@ -29,9 +29,11 @@ const WishList = () => {
           className={`
                 grid grid-cols-1 gap-4 p-2 w-full
                 lg:grid-cols-${
-                  Array.isArray(wishlist_array) && wishlist_array.length > 2
+                  wishlist_array.length && wishlist_array.length > 2
                     ? "2"
-                    : wishlist_array.length || "1"
+                    : wishlist_array.length
+                    ? wishlist_array.length
+                    : "1"
                 } 
                 ${
                   Array.isArray(wishlist_array) && wishlist_array.length > 2
