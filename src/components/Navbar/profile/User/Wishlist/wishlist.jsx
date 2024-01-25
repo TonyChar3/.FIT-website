@@ -31,7 +31,7 @@ const WishList = () => {
                 lg:grid-cols-${
                   Array.isArray(wishlist_array) && wishlist_array.length > 2
                     ? "2"
-                    : wishlist_array.length
+                    : wishlist_array.length || "1"
                 } 
                 ${
                   Array.isArray(wishlist_array) && wishlist_array.length > 2
