@@ -5,6 +5,8 @@ const WishList = () => {
   const { wishlist_array } = UserAuth();
   const [chevron, setChevron] = useState(false); // state of the chevron up/down
 
+  console.log(wishlist_array);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center w-full my-3 lg:my-4">
@@ -25,7 +27,7 @@ const WishList = () => {
             ></i>
           </div>
         </div>
-        {wishlist_array.length !== null ? (
+        {wishlist_array ? (
           <div
             className={`
                       grid grid-cols-1 gap-4 p-2 w-full
