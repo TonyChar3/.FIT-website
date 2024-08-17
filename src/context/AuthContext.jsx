@@ -91,11 +91,10 @@ export const AuthContextProvider = ({ children }) => {
       // set the array
       setProductsArray(response.data);
     } catch (err) {
-      console.log(err);
-      // dispatch(showModal(err))
-      // setTimeout(() => {
-      //     dispatch(closeModal())
-      // },[5000])
+      dispatch(showModal(err));
+      setTimeout(() => {
+        dispatch(closeModal());
+      }, [5000]);
     }
   };
 
@@ -135,7 +134,6 @@ export const AuthContextProvider = ({ children }) => {
 
   const GetFitUserInfo = async () => {
     try {
-      console.log("host: ", host);
       const fetch_auth = await axios.get(`${host}/user/current`, {
         headers: {
           "Content-Type": "application/json",
