@@ -21,11 +21,7 @@ const WishList = () => {
                 chevron ? "rotate-180" : ""
               } duration-300 cursor-pointer`}
             >
-              {chevron ? (
-                <Minus size={16} color="#e8dede" />
-              ) : (
-                <Plus size={16} color="#e8dede" />
-              )}
+              {chevron ? <Minus size={30} /> : <Plus size={30} />}
             </button>
           </div>
         </div>
