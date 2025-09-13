@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { UserAuth } from "../../../../../context/AuthContext";
+import { Minus, Plus } from "lucide-react";
 
 const WishList = () => {
   const { wishlist_array } = UserAuth();
@@ -14,15 +15,18 @@ const WishList = () => {
             <i className="text-lg lg:text-2xl ml-2 fa-regular fa-heart"></i>
           </h2>
           <div className="flex flex-row justify-start items-center ml-5">
-            <i
+            <button
               onClick={() => setChevron((chevron) => !chevron)}
-              className={`
-                        fa-sharp fa-solid 
-                        text-sm lg:text-lg
-                        fa-${chevron ? "minus" : "plus"}-large 
-                        ${chevron ? "rotate-180" : ""} 
-                        duration-300 cursor-pointer`}
-            ></i>
+              className={`${
+                chevron ? "rotate-180" : ""
+              } duration-300 cursor-pointer`}
+            >
+              {chevron ? (
+                <Minus size={16} color="#e8dede" />
+              ) : (
+                <Plus size={16} color="#e8dede" />
+              )}
+            </button>
           </div>
         </div>
         {wishlist_array ? (
@@ -67,7 +71,7 @@ const WishList = () => {
                       className="w-20 h-20 border border-black object-cover object-center rounded-xl lg:w-[100px] lg:h-[120px]"
                     />
                   </div>
-                  <div className="flex flex-row justify-center items-center w-1/3 justify-center">
+                  <div className="flex flex-row items-center w-1/3 justify-center">
                     <h3 className="text-lg lg:text-2xl">{wish.prodct_name}</h3>
                   </div>
                   <div className="flex flex-row items-center w-1/3 justify-center">
