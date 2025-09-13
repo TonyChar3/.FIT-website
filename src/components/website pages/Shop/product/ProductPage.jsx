@@ -12,6 +12,7 @@ import {
 } from "../../../../utils/wishListUtils";
 import { checkOutStripe } from "../../../../utils/checkoutUtils";
 import { BlurhashCanvas } from "react-blurhash";
+import { Heart, HeartPlus } from "lucide-react";
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -262,33 +263,53 @@ const ProductPage = () => {
               >
                 Buy now
               </button>
+
               <div
                 className={`lg:w-60 lg:flex lg:justify-center lg:items-center lg:mt-4 ${
                   user === null ? "lg:hidden hidden" : "hidden"
                 }`}
               >
-                <i
-                  onClick={wishListBtnState}
-                  className={`${
-                    heart
-                      ? "fa-solid fa-heart"
-                      : "fa-light fa-heart-circle-plus"
-                  } text-xl transition-300 lg:text-2xl lg:cursor-pointer active:scale-[0.90] transform-all ease duration-100`}
-                ></i>
+                {heart ? (
+                  <button onClick={wishListBtnState}>
+                    <Heart
+                      size={25}
+                      color="red"
+                      className={`transition-300 lg:cursor-pointer active:scale-[0.90] transform-all ease duration-100`}
+                    />
+                  </button>
+                ) : (
+                  <button onClick={wishListBtnState}>
+                    <HeartPlus
+                      size={25}
+                      className={`transition-300 lg:cursor-pointer active:scale-[0.90] transform-all ease duration-100`}
+                    />
+                  </button>
+                )}
               </div>
             </div>
           </div>
+
           <div
             className={`w-60 flex justify-center items-center mt-4 ${
               user === null ? "lg:hidden hidden" : "lg:hidden"
             }`}
           >
-            <i
-              onClick={wishListBtnState}
-              className={`${
-                heart ? "fa-solid fa-heart" : "fa-light fa-heart-circle-plus"
-              } text-xl transition-300 lg:text-3xl lg:cursor-pointer active:scale-[0.90] transform-all ease duration-100`}
-            ></i>
+            {heart ? (
+              <button onClick={wishListBtnState}>
+                <Heart
+                  size={30}
+                  color="red"
+                  className={`text-xl transition-300 lg:text-3xl lg:cursor-pointer active:scale-[0.90] transform-all ease duration-100`}
+                />
+              </button>
+            ) : (
+              <button onClick={wishListBtnState}>
+                <HeartPlus
+                  size={30}
+                  className={`text-xl transition-300 lg:text-3xl lg:cursor-pointer active:scale-[0.90] transform-all ease duration-100`}
+                />
+              </button>
+            )}
           </div>
         </div>
       </motion.div>
