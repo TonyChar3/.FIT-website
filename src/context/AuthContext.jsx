@@ -88,6 +88,7 @@ export const AuthContextProvider = ({ children }) => {
         },
         withCredentials: true,
       });
+
       // set the array
       setProductsArray(response.data);
     } catch (err) {
